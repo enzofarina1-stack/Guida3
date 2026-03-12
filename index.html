@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Casa sul Mare — Guida Ospiti</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --off-white: #FAF9F7;
+  --cream: #F5F0E8;
+  --warm-gray: #E8E2D8;
+  --gold: #B8965A;
+  --gold-light: #D4B07A;
+  --gold-pale: #F0E8D5;
+  --text: #1C1810;
+  --text-mid: #5A5248;
+  --text-soft: #9A9088;
+  --line: #E5DDD0;
+  --radius: 18px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; font-family: 'Jost', sans-serif; background: var(--off-white); color: var(--text); max-width: 430px; margin: 0 auto; overflow: hidden; }
+
+.app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
+
+/* TOP NAV */
+.top-nav { background: var(--white); border-bottom: 1px solid var(--line); padding: 0 4px; display: flex; align-items: center; gap: 0; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; height: 58px; }
+.top-nav::-webkit-scrollbar { display: none; }
+.nav-tab { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 11px; border: none; background: none; cursor: pointer; border-radius: 10px; white-space: nowrap; flex-shrink: 0; position: relative; }
+.nav-tab.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 20px; height: 2px; background: var(--gold); border-radius: 2px; }
+.tab-icon svg { width: 21px; height: 21px; stroke: var(--text-soft); stroke-width: 1.5; fill: none; transition: stroke .2s; }
+.nav-tab.active .tab-icon svg { stroke: var(--gold); }
+.tab-label { font-size: 9px; font-weight: 500; letter-spacing: 0.7px; text-transform: uppercase; color: var(--text-soft); transition: color .2s; }
+.nav-tab.active .tab-label { color: var(--gold); }
+
+/* SCREENS */
+.screen { display: none; flex: 1; overflow-y: auto; flex-direction: column; -webkit-overflow-scrolling: touch; }
+.screen.active { display: flex; animation: fadeUp .28s ease; }
+@keyframes fadeUp { from { opacity:0; transform: translateY(6px) } to { opacity:1; transform: none } }
+
+/* HOME */
+.home-hero { background: var(--white); padding: 40px 28px 32px; text-align: center; border-bottom: 1px solid var(--line); position: relative; }
+.home-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.home-eyebrow { font-size: 10px; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.home-dear { font-family: 'Cormorant Garamond', serif; font-size: 14px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 4px; }
+.home-welcome { font-family: 'Cormorant Garamond', serif; font-size: 64px; font-weight: 300; line-height: 1; color: var(--text); margin-bottom: 12px; font-style: italic; }
+.home-sub { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 22px; }
+.home-ornament { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 16px; }
+.home-ornament::before, .home-ornament::after { content: ''; flex: 1; max-width: 50px; height: 1px; background: var(--gold-light); opacity: .6; }
+.home-ornament span { color: var(--gold); font-size: 10px; letter-spacing: 4px; }
+.home-property { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--text-mid); font-weight: 400; }
+
+/* GRID */
+.home-grid { padding: 24px 20px 10px; }
+.grid-eyebrow { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 16px; text-align: center; }
+.icon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.icon-btn { display: flex; flex-direction: column; align-items: center; gap: 9px; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 8px 14px; cursor: pointer; transition: transform .15s, box-shadow .15s; }
+.icon-btn:active { transform: scale(0.95); box-shadow: 0 4px 16px rgba(184,150,90,.18); border-color: var(--gold-light); }
+.btn-icon svg { width: 26px; height: 26px; stroke: var(--text-mid); stroke-width: 1.4; fill: none; }
+.btn-label { font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--text-mid); text-align: center; line-height: 1.3; }
+
+/* WELCOME CARD */
+.welcome-wrap { padding: 10px 20px 40px; }
+.welcome-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 22px 18px; position: relative; overflow: hidden; }
+.welcome-card::before { content: '\201C'; font-family: 'Cormorant Garamond', serif; font-size: 100px; line-height: 1; color: var(--gold); opacity: .1; position: absolute; top: -8px; left: 12px; pointer-events: none; }
+.welcome-text { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; line-height: 1.8; color: var(--text-mid); padding-top: 10px; margin-bottom: 16px; }
+.welcome-author { display: flex; align-items: center; gap: 12px; padding-top: 14px; border-top: 1px solid var(--line); }
+.author-mono { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--gold-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.author-mono svg { width: 15px; height: 15px; stroke: var(--gold); stroke-width: 1.5; fill: none; }
+.author-name { font-size: 13px; font-weight: 500; color: var(--text); }
+.author-role { font-size: 11px; color: var(--text-soft); }
+
+/* PAGE HEADER */
+.page-header { background: var(--white); padding: 28px 24px 22px; border-bottom: 1px solid var(--line); position: relative; flex-shrink: 0; }
+.page-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.page-eyebrow { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; font-weight: 400; }
+.page-title { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 300; color: var(--text); line-height: 1.1; }
+.page-body { padding: 18px 18px 60px; }
+
+/* CARD */
+.card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; margin-bottom: 10px; }
+.card-label { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
+.card p { font-size: 14px; line-height: 1.75; color: var(--text-mid); }
+.card strong { color: var(--text); font-weight: 500; }
+.info-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.info-row:last-child { border-bottom: none; padding-bottom: 0; }
+.info-label { font-size: 12px; color: var(--text-soft); }
+.info-value { font-size: 14px; font-weight: 500; color: var(--text); }
+
+/* WIFI */
+.wifi-card { background: var(--text); border-radius: var(--radius); padding: 26px 22px; margin-bottom: 10px; text-align: center; position: relative; overflow: hidden; }
+.wifi-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 75% 25%, rgba(184,150,90,.22), transparent 55%); }
+.wifi-ico { margin-bottom: 18px; position: relative; z-index: 1; }
+.wifi-ico svg { width: 38px; height: 38px; stroke: var(--gold); stroke-width: 1.3; fill: none; }
+.wifi-field { margin-bottom: 10px; position: relative; z-index: 1; }
+.wifi-field-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 3px; }
+.wifi-field-val { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: white; letter-spacing: 1px; }
+.copy-btn { display: inline-flex; align-items: center; gap: 7px; background: var(--gold); border: none; border-radius: 100px; color: white; font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 10px 22px; cursor: pointer; margin-top: 8px; position: relative; z-index: 1; transition: opacity .2s; }
+.copy-btn:active { opacity: .75; }
+.copy-btn svg { width: 13px; height: 13px; stroke: white; stroke-width: 2; fill: none; }
+
+/* RULES */
+.rule-item { display: flex; gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--line); }
+.rule-item:last-child { border-bottom: none; padding-bottom: 0; }
+.rule-num { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; color: var(--gold); line-height: 1; flex-shrink: 0; width: 24px; text-align: right; margin-top: -2px; }
+.rule-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.rule-desc { font-size: 13px; line-height: 1.65; color: var(--text-mid); }
+
+/* SPACES */
+.space-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; margin-bottom: 10px; }
+.space-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.space-icon svg { width: 22px; height: 22px; stroke: var(--gold); stroke-width: 1.4; fill: none; }
+.space-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: var(--text); }
+.space-desc { font-size: 13px; line-height: 1.7; color: var(--text-mid); margin-bottom: 10px; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { background: var(--cream); border-radius: 100px; padding: 4px 11px; font-size: 11px; color: var(--text-mid); }
+
+/* PLACES */
+.place-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; display: flex; gap: 14px; }
+.place-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 6px; }
+.place-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: var(--text); margin-bottom: 4px; }
+.place-desc { font-size: 13px; line-height: 1.65; color: var(--text-mid); margin-bottom: 7px; }
+.place-dist { font-size: 10px; color: var(--gold); font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
+
+/* RESTAURANTS */
+.resto-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-bottom: 10px; }
+.resto-img { height: 80px; background: var(--cream); display: flex; align-items: center; justify-content: center; position: relative; }
+.resto-img svg { width: 28px; height: 28px; stroke: var(--gold-light); stroke-width: 1.2; fill: none; opacity: .7; }
+.resto-img-lbl { position: absolute; bottom: 7px; right: 10px; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-soft); }
+.resto-body { padding: 14px 16px 16px; }
+.resto-name { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; color: var(--text); margin-bottom: 2px; }
+.resto-type { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.resto-desc { font-size: 13px; line-height: 1.65; color: var(--text-mid); margin-bottom: 12px; }
+.resto-footer { display: flex; align-items: center; justify-content: space-between; }
+.guide-btn { display: inline-flex; align-items: center; gap: 5px; background: var(--gold); color: white; border: none; border-radius: 100px; font-family: 'Jost', sans-serif; font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 14px; cursor: pointer; transition: opacity .2s; text-decoration: none; }
+.guide-btn:active { opacity: .75; }
+.guide-btn svg { width: 11px; height: 11px; stroke: white; stroke-width: 2; fill: none; }
+
+/* SERVICES */
+.service-row { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.service-row:last-child { border-bottom: none; padding-bottom: 0; }
+.service-icon { flex-shrink: 0; margin-top: 2px; }
+.service-icon svg { width: 19px; height: 19px; stroke: var(--gold); stroke-width: 1.5; fill: none; }
+.service-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.service-desc { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+
+/* EMERGENCY */
+.sos-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+.sos-icon { width: 44px; height: 44px; border-radius: 13px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sos-icon svg { width: 21px; height: 21px; fill: none; stroke-width: 1.5; }
+.sos-info { flex: 1; }
+.sos-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.sos-desc { font-size: 12px; color: var(--text-soft); }
+.call-btn { display: flex; align-items: center; gap: 5px; background: var(--text); color: white; border: none; border-radius: 100px; font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 500; padding: 8px 13px; cursor: pointer; text-decoration: none; transition: opacity .2s; white-space: nowrap; }
+.call-btn.gold { background: var(--gold); }
+.call-btn:active { opacity: .75; }
+.call-btn svg { width: 12px; height: 12px; stroke: white; stroke-width: 2; fill: none; }
+
+/* CONTACT BAR */
+.contact-bar { background: var(--text); border-radius: var(--radius); padding: 18px 18px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; position: relative; overflow: hidden; }
+.contact-bar::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 80% 50%, rgba(184,150,90,.2), transparent 55%); }
+.contact-bar-text { position: relative; z-index: 1; }
+.contact-bar-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 3px; }
+.contact-bar-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; color: white; font-weight: 300; }
+.contact-bar-btn { position: relative; z-index: 1; background: var(--gold); border: none; border-radius: 100px; color: white; font-family: 'Jost', sans-serif; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; padding: 9px 16px; cursor: pointer; font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 5px; transition: opacity .2s; }
+.contact-bar-btn svg { width: 12px; height: 12px; stroke: white; stroke-width: 2; fill: none; }
+.contact-bar-btn:active { opacity: .75; }
+
+/* STEPS */
+.step-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.step-item:last-child { border-bottom: none; padding-bottom: 0; }
+.step-num { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 300; color: var(--gold); line-height: 1; flex-shrink: 0; width: 26px; text-align: right; margin-top: -4px; }
+.step-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.step-desc { font-size: 13px; line-height: 1.65; color: var(--text-mid); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOP NAV -->
+  <nav class="top-nav">
+    <button class="nav-tab active" onclick="showScreen('home',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+      <span class="tab-label">Home</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('checkin',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M6.343 6.343a8 8 0 100 11.314"/><path d="M17.657 6.343A8 8 0 1117.657 17.657"/></svg></span>
+      <span class="tab-label">Check-in</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('wifi',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg></span>
+      <span class="tab-label">WiFi</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('regole',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+      <span class="tab-label">Regole</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('spazi',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+      <span class="tab-label">Spazi</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('visitare',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+      <span class="tab-label">Luoghi</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('ristoranti',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></span>
+      <span class="tab-label">Ristoranti</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('servizi',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+      <span class="tab-label">Servizi</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('emergenza',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+      <span class="tab-label">SOS</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('checkout',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+      <span class="tab-label">Check-out</span>
+    </button>
+  </nav>
+
+  <!-- HOME -->
+  <div id="home" class="screen active">
+    <div class="home-hero">
+      <div class="home-eyebrow">Porto Antico · Italia</div>
+      <div class="home-dear">Dear Guest,</div>
+      <div class="home-welcome">Welcome!</div>
+      <div class="home-sub">Click on the icons</div>
+      <div class="home-ornament"><span>✦ ✦ ✦</span></div>
+      <div class="home-property">Casa sul Mare</div>
+    </div>
+    <div class="home-grid">
+      <div class="grid-eyebrow">La tua guida completa</div>
+      <div class="icon-grid">
+        <button class="icon-btn" onclick="goTo('checkin',1)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></span>
+          <span class="btn-label">Check-in</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('wifi',2)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg></span>
+          <span class="btn-label">WiFi</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('regole',3)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+          <span class="btn-label">House Rules</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('spazi',4)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+          <span class="btn-label">Spazi</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('visitare',5)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span class="btn-label">Da Visitare</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('ristoranti',6)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></span>
+          <span class="btn-label">Ristoranti</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('servizi',7)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+          <span class="btn-label">Servizi</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('emergenza',8)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+          <span class="btn-label">Emergenza</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('checkout',9)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+          <span class="btn-label">Check-out</span>
+        </button>
+      </div>
+    </div>
+    <div class="welcome-wrap">
+      <div class="welcome-card">
+        <p class="welcome-text">Siamo felici di ospitarti! Abbiamo preparato questa guida per rendere il tuo soggiorno perfetto. Non esitare a contattarci per qualsiasi cosa — siamo qui per te.</p>
+        <div class="welcome-author">
+          <div class="author-mono"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div><div class="author-name">Marco &amp; Giulia</div><div class="author-role">I vostri host</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECK-IN -->
+  <div id="checkin" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Informazioni</div><div class="page-title">Check-in &amp; Accesso</div></div>
+    <div class="page-body">
+      <div class="card"><div class="card-label">Orari &amp; Info</div>
+        <div class="info-row"><span class="info-label">Check-in</span><span class="info-value">dalle 15:00</span></div>
+        <div class="info-row"><span class="info-label">Check-out</span><span class="info-value">entro le 11:00</span></div>
+        <div class="info-row"><span class="info-label">Ospiti massimi</span><span class="info-value">4 persone</span></div>
+        <div class="info-row"><span class="info-label">Indirizzo</span><span class="info-value">Via del Mare, 12</span></div>
+      </div>
+      <div class="card"><div class="card-label">Come accedere</div>
+        <p>La cassetta delle chiavi è <strong>a sinistra del portone</strong>. Codice: <strong>2847</strong> — premi ★ poi il codice. Usa la chiave con il portachiavi blu.</p>
+      </div>
+      <div class="card"><div class="card-label">Parcheggio</div>
+        <p>Posto auto riservato nel cortile interno. Accesso dal cancello su <strong>Via Garibaldi</strong>, stesso codice: <strong>2847</strong>.</p>
+      </div>
+      <a href="https://maps.google.com" target="_blank" class="guide-btn" style="width:100%;justify-content:center;border-radius:14px;padding:13px;font-size:10px;letter-spacing:1.5px;">
+        <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:white;stroke-width:2;fill:none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Indicazioni stradali
+      </a>
+    </div>
+  </div>
+
+  <!-- WIFI -->
+  <div id="wifi" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Connettività</div><div class="page-title">WiFi</div></div>
+    <div class="page-body">
+      <div class="wifi-card">
+        <div class="wifi-ico"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg></div>
+        <div class="wifi-field"><div class="wifi-field-lbl">Nome Rete</div><div class="wifi-field-val">CasaSulMare_Guest</div></div>
+        <div class="wifi-field"><div class="wifi-field-lbl">Password</div><div class="wifi-field-val" id="pwd">mare2024</div></div>
+        <button class="copy-btn" onclick="copyPwd(this)">
+          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copia Password
+        </button>
+      </div>
+      <div class="card"><div class="card-label">Nota</div><p>Segnale ottimale in salotto e camera. In caso di problemi riavvia il router (box bianco in cucina) tenendo il tasto laterale per 10 secondi.</p></div>
+    </div>
+  </div>
+
+  <!-- REGOLE -->
+  <div id="regole" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Da Rispettare</div><div class="page-title">House Rules</div></div>
+    <div class="page-body">
+      <div class="card">
+        <div class="rule-item"><div class="rule-num">1</div><div><div class="rule-title">Silenzio Notturno</div><div class="rule-desc">Dalle 23:00 alle 8:00 si prega di mantenere un livello di rumore ridotto.</div></div></div>
+        <div class="rule-item"><div class="rule-num">2</div><div><div class="rule-title">Niente Fumo</div><div class="rule-desc">Vietato fumare negli spazi interni. Consentito sul balcone con il posacenere.</div></div></div>
+        <div class="rule-item"><div class="rule-num">3</div><div><div class="rule-title">Animali Domestici</div><div class="rule-desc">I pet sono benvenuti previa comunicazione. Non lasciarli su divano o letti.</div></div></div>
+        <div class="rule-item"><div class="rule-num">4</div><div><div class="rule-title">Ospiti Aggiuntivi</div><div class="rule-desc">Gli ospiti non registrati non possono pernottare. Contatta l'host per aggiunte.</div></div></div>
+        <div class="rule-item"><div class="rule-num">5</div><div><div class="rule-title">Raccolta Differenziata</div><div class="rule-desc">Sacchi sotto il lavello: <strong>giallo</strong> plastica · <strong>blu</strong> carta · <strong>grigio</strong> indifferenziato.</div></div></div>
+        <div class="rule-item"><div class="rule-num">6</div><div><div class="rule-title">Cura degli Spazi</div><div class="rule-desc">Trattate la casa con rispetto. Per rotture accidentali, segnalate senza problemi.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPAZI -->
+  <div id="spazi" class="screen">
+    <div class="page-header"><div class="page-eyebrow">L'Appartamento</div><div class="page-title">Gli Spazi</div></div>
+    <div class="page-body">
+      <div class="space-card">
+        <div class="space-header"><span class="space-icon"><svg viewBox="0 0 24 24"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 010 4H2"/><path d="M2 20h20"/></svg></span><div class="space-name">Camera da Letto</div></div>
+        <p class="space-desc">Letto matrimoniale con materasso memory foam. Biancheria fresca. Cuscini extra nell'armadio a sinistra.</p>
+        <div class="tag-row"><span class="tag">Aria condizionata</span><span class="tag">Smart TV 43"</span><span class="tag">Cassaforte</span></div>
+      </div>
+      <div class="space-card">
+        <div class="space-header"><span class="space-icon"><svg viewBox="0 0 24 24"><path d="M3 2h18v6H3zM3 14h18v6H3z"/><line x1="12" y1="8" x2="12" y2="14"/></svg></span><div class="space-name">Cucina</div></div>
+        <p class="space-desc">Completamente attrezzata. Caffè e tè nel pensile a destra. Moka da 6 nel secondo cassetto.</p>
+        <div class="tag-row"><span class="tag">Macchinetta</span><span class="tag">Fornelli gas</span><span class="tag">Lavastoviglie</span></div>
+      </div>
+      <div class="space-card">
+        <div class="space-header"><span class="space-icon"><svg viewBox="0 0 24 24"><path d="M9 6 C9 3.8 10.8 2 13 2s4 1.8 4 4v4H5v3a6 6 0 0012 0v-1"/><line x1="5" y1="10" x2="19" y2="10"/></svg></span><div class="space-name">Bagno</div></div>
+        <p class="space-desc">Doccia con idromassaggio. Asciugamani nell'armadietto a muro. Phon nel cassetto sotto il lavabo.</p>
+        <div class="tag-row"><span class="tag">Idromassaggio</span><span class="tag">Acqua calda istantanea</span></div>
+      </div>
+      <div class="space-card">
+        <div class="space-header"><span class="space-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></span><div class="space-name">Balcone</div></div>
+        <p class="space-desc">Vista sul porto. Tavolo e due sedie. Perfetto per la colazione con la luce del mattino.</p>
+        <div class="tag-row"><span class="tag">Vista mare</span><span class="tag">Orientamento Est</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DA VISITARE -->
+  <div id="visitare" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Dintorni</div><div class="page-title">Places to Visit</div></div>
+    <div class="page-body">
+      <div class="place-card"><div class="place-dot"></div><div>
+        <div class="place-name">Castello Aragonese</div>
+        <p class="place-desc">Fortezza medievale con vista panoramica sul golfo. Da non perdere al tramonto.</p>
+        <div class="place-dist">8 min a piedi</div>
+      </div></div>
+      <div class="place-card"><div class="place-dot"></div><div>
+        <div class="place-name">Spiaggia della Caletta</div>
+        <p class="place-desc">Caletta nascosta con acqua cristallina, accessibile lungo il sentiero dei pescatori.</p>
+        <div class="place-dist">15 min a piedi</div>
+      </div></div>
+      <div class="place-card"><div class="place-dot"></div><div>
+        <div class="place-name">Porto Antico</div>
+        <p class="place-desc">Passeggiata tra pescherecci colorati, bar e gelaterie. Il cuore della vita locale.</p>
+        <div class="place-dist">2 min a piedi</div>
+      </div></div>
+      <div class="place-card"><div class="place-dot"></div><div>
+        <div class="place-name">Giardini Botanici</div>
+        <p class="place-desc">Riserva naturale con piante mediterranee rare. Biglietto €5, aperto 9:00–18:00.</p>
+        <div class="place-dist">20 min in auto</div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- RISTORANTI -->
+  <div id="ristoranti" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Consigli dell'host</div><div class="page-title">Where to Eat</div></div>
+    <div class="page-body">
+      <div class="resto-card">
+        <div class="resto-img" style="background:#F5EDE0;"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg><span class="resto-img-lbl">Cucina di mare</span></div>
+        <div class="resto-body">
+          <div class="resto-name">Trattoria da Rocco</div>
+          <div class="resto-type">Pesce · Tradizionale</div>
+          <p class="resto-desc">Il migliore della zona. Il pescato è servito solo su prenotazione. Menziona il nostro nome!</p>
+          <div class="resto-footer">
+            <div class="tag-row"><span class="tag">3 min</span><span class="tag">€€</span></div>
+            <a href="https://maps.google.com" target="_blank" class="guide-btn">Guide me here <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          </div>
+        </div>
+      </div>
+      <div class="resto-card">
+        <div class="resto-img" style="background:#EEF0EB;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span class="resto-img-lbl">Pizza napoletana</span></div>
+        <div class="resto-body">
+          <div class="resto-name">Il Vecchio Forno</div>
+          <div class="resto-type">Pizza · Forno a legna</div>
+          <p class="resto-desc">Dal 1978. La margherita DOP è imperdibile. Ottimo anche per asporto.</p>
+          <div class="resto-footer">
+            <div class="tag-row"><span class="tag">5 min</span><span class="tag">€</span></div>
+            <a href="https://maps.google.com" target="_blank" class="guide-btn">Guide me here <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          </div>
+        </div>
+      </div>
+      <div class="resto-card">
+        <div class="resto-img" style="background:#E8ECF0;"><svg viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 010 8h-1"/><path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z"/></svg><span class="resto-img-lbl">Colazione &amp; Aperitivo</span></div>
+        <div class="resto-body">
+          <div class="resto-name">Bar Centrale</div>
+          <div class="resto-type">Caffè · Aperitivo</div>
+          <p class="resto-desc">Cornetti freschi dal mattino. Aperitivo rinforzato dalle 18:00. Il barista Enzo è leggendario.</p>
+          <div class="resto-footer">
+            <div class="tag-row"><span class="tag">1 min</span><span class="tag">€</span></div>
+            <a href="https://maps.google.com" target="_blank" class="guide-btn">Guide me here <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVIZI -->
+  <div id="servizi" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Extra</div><div class="page-title">Servizi</div></div>
+    <div class="page-body">
+      <div class="card">
+        <div class="service-row"><span class="service-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></span><div><div class="service-name">Cambio Biancheria</div><div class="service-desc">Su richiesta per soggiorni oltre 5 notti. Gratuito.</div></div></div>
+        <div class="service-row"><span class="service-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v13H3z"/><path d="M8 21h8m-4-5v5"/></svg></span><div><div class="service-name">Pulizia Aggiuntiva</div><div class="service-desc">Disponibile a €25. Contatta l'host con 24h di anticipo.</div></div></div>
+        <div class="service-row"><span class="service-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span><div><div class="service-name">Transfer Aeroporto</div><div class="service-desc">Taxi convenzionato. Contattaci per tariffe e disponibilità.</div></div></div>
+        <div class="service-row"><span class="service-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></span><div><div class="service-name">Spesa a Domicilio</div><div class="service-desc">Supermercato locale, consegna in 2h. App: "SpesaFacile".</div></div></div>
+        <div class="service-row"><span class="service-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.69A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.24-1.26a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span><div><div class="service-name">Noleggio Barca</div><div class="service-desc">Gommone 40cv, patente non richiesta sotto 25cv. Da €80/giorno.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMERGENZA -->
+  <div id="emergenza" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Numeri Utili</div><div class="page-title">Emergenze</div></div>
+    <div class="page-body">
+      <div class="sos-card"><div class="sos-icon"><svg viewBox="0 0 24 24" style="stroke:#E74C3C"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="sos-info"><div class="sos-name">Pronto Soccorso</div><div class="sos-desc">Ospedale Civile · 12 min in auto</div></div><a href="tel:118" class="call-btn"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.69A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.24-1.26a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>118</a></div>
+      <div class="sos-card"><div class="sos-icon"><svg viewBox="0 0 24 24" style="stroke:#3498DB"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="sos-info"><div class="sos-name">Carabinieri</div><div class="sos-desc">Piazza Vittoria · 5 min a piedi</div></div><a href="tel:112" class="call-btn"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.69A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.24-1.26a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>112</a></div>
+      <div class="sos-card"><div class="sos-icon"><svg viewBox="0 0 24 24" style="stroke:#E67E22"><path d="M8.56 2.9A7 7 0 0119 9v4l3 3v1H2v-1l3-3V9a7 7 0 014.56-6.1M12 22a2 2 0 002-2h-4a2 2 0 002 2z"/></svg></div><div class="sos-info"><div class="sos-name">Vigili del Fuoco</div><div class="sos-desc">Incendi · allagamenti · emergenze</div></div><a href="tel:115" class="call-btn"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.69A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.24-1.26a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>115</a></div>
+      <div class="contact-bar">
+        <div class="contact-bar-text"><div class="contact-bar-lbl">Host</div><div class="contact-bar-name">Marco &amp; Giulia</div></div>
+        <a href="tel:+393331234567" class="contact-bar-btn"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.69A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.24-1.26a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Chiama ora</a>
+      </div>
+      <div class="card"><div class="card-label">Blackout</div><p>Quadro elettrico nell'ingresso, armadio a destra. Riattiva gli interruttori dall'alto. Se persiste, chiama Marco.</p></div>
+    </div>
+  </div>
+
+  <!-- CHECK-OUT -->
+  <div id="checkout" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Partenza</div><div class="page-title">Check-out</div></div>
+    <div class="page-body">
+      <div class="card"><div class="card-label">Orario</div><p>Il check-out è entro le <strong>11:00</strong>. Per partenze anticipate o deposito bagagli, contattaci.</p></div>
+      <div class="card">
+        <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Raccogliere i bagagli</div><div class="step-desc">Controlla armadi, cassetti, bagno e balcone per oggetti personali.</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Rifiuti e cucina</div><div class="step-desc">Smaltisci i rifiuti nei sacchi colorati e portali al cassonetto in fondo alla via.</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Chiudere tutto</div><div class="step-desc">Finestre, tapparelle, aria condizionata, carica-batterie staccati.</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div><div class="step-title">Riconsegna chiavi</div><div class="step-desc">Rimetti le chiavi nella cassetta con codice 2847. Richiudi a scatto.</div></div></div>
+        <div class="step-item"><div class="step-num">5</div><div><div class="step-title">Lascia una recensione ✦</div><div class="step-desc">Una recensione su Airbnb ci aiuta tantissimo. Grazie di cuore!</div></div></div>
+      </div>
+      <div class="contact-bar">
+        <div class="contact-bar-text"><div class="contact-bar-lbl">È stato un piacere</div><div class="contact-bar-name">Arrivederci!</div></div>
+        <a href="tel:+393331234567" class="contact-bar-btn"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.69A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.24-1.26a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Contatta host</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const screenIds = ['home','checkin','wifi','regole','spazi','visitare','ristoranti','servizi','emergenza','checkout'];
+
+function showScreen(id, tabEl) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (tabEl) { tabEl.classList.add('active'); tabEl.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); }
+}
+
+function goTo(id, idx) {
+  const tabs = document.querySelectorAll('.nav-tab');
+  showScreen(id, tabs[idx] || null);
+}
+
+function copyPwd(btn) {
+  const pwd = document.getElementById('pwd').textContent;
+  navigator.clipboard.writeText(pwd).then(() => {
+    btn.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" stroke="white" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"/></svg> Copiata!';
+    setTimeout(() => { btn.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" stroke="white" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copia Password'; }, 2000);
+  }).catch(() => alert('Password: ' + pwd));
+}
+</script>
+</body>
+</html>
