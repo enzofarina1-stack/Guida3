@@ -4,930 +4,512 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Guida Ospiti – Casa sul Mare</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Casa sul Mare — Guida Ospiti</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --cream: #FAF6EF;
-    --warm: #F2E8D5;
-    --terracotta: #C4603A;
-    --terra-light: #E8896A;
-    --terra-dark: #9B3F20;
-    --sand: #D4A96A;
-    --sage: #7A8C6E;
-    --navy: #2C3E50;
-    --text: #2A1F14;
-    --text-soft: #6B5744;
-    --white: #FFFFFF;
-    --shadow: 0 8px 32px rgba(42,31,20,0.12);
-    --radius: 20px;
-  }
+:root {
+  --white: #FFFFFF;
+  --off-white: #FAF9F7;
+  --cream: #F5F0E8;
+  --warm-gray: #E8E2D8;
+  --gold: #B8965A;
+  --gold-light: #D4B07A;
+  --gold-pale: #F0E8D5;
+  --text: #1C1810;
+  --text-mid: #5A5248;
+  --text-soft: #9A9088;
+  --line: #E5DDD0;
+  --radius: 18px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; font-family: 'Jost', sans-serif; background: var(--off-white); color: var(--text); max-width: 430px; margin: 0 auto; overflow: hidden; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+.app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-    max-width: 430px;
-    margin: 0 auto;
-    position: relative;
-  }
+/* TOP NAV */
+.top-nav { background: var(--white); border-bottom: 1px solid var(--line); padding: 0 4px; display: flex; align-items: center; gap: 0; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; height: 58px; }
+.top-nav::-webkit-scrollbar { display: none; }
+.nav-tab { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 11px; border: none; background: none; cursor: pointer; border-radius: 10px; white-space: nowrap; flex-shrink: 0; position: relative; }
+.nav-tab.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 20px; height: 2px; background: var(--gold); border-radius: 2px; }
+.tab-icon svg { width: 21px; height: 21px; stroke: var(--text-soft); stroke-width: 1.5; fill: none; transition: stroke .2s; }
+.nav-tab.active .tab-icon svg { stroke: var(--gold); }
+.tab-label { font-size: 9px; font-weight: 500; letter-spacing: 0.7px; text-transform: uppercase; color: var(--text-soft); transition: color .2s; }
+.nav-tab.active .tab-label { color: var(--gold); }
 
-  /* ── SCREENS ── */
-  .screen { display: none; min-height: 100vh; flex-direction: column; animation: fadeIn .35s ease; }
-  .screen.active { display: flex; }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:none } }
+/* SCREENS */
+.screen { display: none; flex: 1; overflow-y: auto; flex-direction: column; -webkit-overflow-scrolling: touch; }
+.screen.active { display: flex; animation: fadeUp .28s ease; }
+@keyframes fadeUp { from { opacity:0; transform: translateY(6px) } to { opacity:1; transform: none } }
 
-  /* ── HOME SCREEN ── */
-  #home {
-    background: var(--cream);
-    position: relative; overflow: hidden;
-  }
+/* HOME */
+.home-hero { background: var(--white); padding: 40px 28px 32px; text-align: center; border-bottom: 1px solid var(--line); position: relative; }
+.home-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.home-eyebrow { font-size: 10px; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.home-dear { font-family: 'Cormorant Garamond', serif; font-size: 14px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 4px; }
+.home-welcome { font-family: 'Cormorant Garamond', serif; font-size: 64px; font-weight: 300; line-height: 1; color: var(--text); margin-bottom: 12px; font-style: italic; }
+.home-sub { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 22px; }
+.home-ornament { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 16px; }
+.home-ornament::before, .home-ornament::after { content: ''; flex: 1; max-width: 50px; height: 1px; background: var(--gold-light); opacity: .6; }
+.home-ornament span { color: var(--gold); font-size: 10px; letter-spacing: 4px; }
+.home-property { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--text-mid); font-weight: 400; }
 
-  .home-hero {
-    background: linear-gradient(155deg, #1a2a3a 0%, #C4603A 55%, #D4A96A 100%);
-    padding: 52px 24px 32px;
-    position: relative; overflow:hidden;
-    text-align: center;
-  }
-  .home-hero::before {
-    content:''; position:absolute; inset:0;
-    background: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='1.5' fill='rgba(255,255,255,0.06)'/%3E%3C/svg%3E");
-    pointer-events:none;
-  }
-  /* decorative circles */
-  .home-hero::after {
-    content:''; position:absolute;
-    width:260px; height:260px; border-radius:50%;
-    background: rgba(255,255,255,0.05);
-    top:-80px; right:-80px;
-    pointer-events:none;
-  }
-  .hero-circle {
-    position:absolute; width:160px; height:160px; border-radius:50%;
-    background: rgba(255,255,255,0.04);
-    bottom:-50px; left:-40px;
-    pointer-events:none;
-  }
+/* GRID */
+.home-grid { padding: 24px 20px 10px; }
+.grid-eyebrow { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 16px; text-align: center; }
+.icon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.icon-btn { display: flex; flex-direction: column; align-items: center; gap: 9px; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 8px 14px; cursor: pointer; transition: transform .15s, box-shadow .15s; }
+.icon-btn:active { transform: scale(0.95); box-shadow: 0 4px 16px rgba(184,150,90,.18); border-color: var(--gold-light); }
+.btn-icon svg { width: 26px; height: 26px; stroke: var(--text-mid); stroke-width: 1.4; fill: none; }
+.btn-label { font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--text-mid); text-align: center; line-height: 1.3; }
 
-  .property-badge {
-    display: inline-flex; align-items:center; gap:8px;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 100px; padding: 6px 16px 6px 10px;
-    color: rgba(255,255,255,0.9); font-size: 12px; font-weight:500;
-    margin-bottom: 18px;
-    position: relative; z-index:1;
-  }
-  .property-badge span { font-size:16px; }
+/* WELCOME CARD */
+.welcome-wrap { padding: 10px 20px 40px; }
+.welcome-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 22px 18px; position: relative; overflow: hidden; }
+.welcome-card::before { content: '\201C'; font-family: 'Cormorant Garamond', serif; font-size: 100px; line-height: 1; color: var(--gold); opacity: .1; position: absolute; top: -8px; left: 12px; pointer-events: none; }
+.welcome-text { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; line-height: 1.8; color: var(--text-mid); padding-top: 10px; margin-bottom: 16px; }
+.welcome-author { display: flex; align-items: center; gap: 12px; padding-top: 14px; border-top: 1px solid var(--line); }
+.author-mono { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--gold-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.author-mono svg { width: 15px; height: 15px; stroke: var(--gold); stroke-width: 1.5; fill: none; }
+.author-name { font-size: 13px; font-weight: 500; color: var(--text); }
+.author-role { font-size: 11px; color: var(--text-soft); }
 
-  .home-logo-row {
-    display: flex; align-items:center; justify-content:center; gap:16px;
-    margin-bottom: 14px; position:relative; z-index:1;
-  }
-  .home-logo {
-    width: 72px; height: 72px;
-    background: white;
-    border-radius: 20px;
-    display: flex; align-items:center; justify-content:center;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.28);
-    font-size: 32px;
-    flex-shrink:0;
-  }
-  .home-title-block { text-align:left; }
-  .home-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px; font-weight: 700;
-    color: white; line-height: 1.2;
-  }
-  .home-subtitle {
-    color: rgba(255,255,255,0.7);
-    font-size: 13px; font-weight: 300;
-    margin-top: 4px;
-  }
+/* PAGE HEADER */
+.page-header { background: var(--white); padding: 28px 24px 22px; border-bottom: 1px solid var(--line); position: relative; flex-shrink: 0; }
+.page-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.page-eyebrow { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; font-weight: 400; }
+.page-title { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 300; color: var(--text); line-height: 1.1; }
+.page-body { padding: 18px 18px 60px; }
 
-  /* ICON GRID */
-  .grid-container {
-    padding: 24px 18px 16px;
-    position: relative; z-index:1;
-    background: var(--cream);
-  }
-  .grid-label {
-    font-size: 11px; font-weight: 500; letter-spacing:1.5px;
-    color: var(--text-soft); text-transform:uppercase;
-    margin-bottom: 16px;
-  }
+/* CARD */
+.card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; margin-bottom: 10px; }
+.card-label { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
+.card p { font-size: 14px; line-height: 1.75; color: var(--text-mid); }
+.card strong { color: var(--text); font-weight: 500; }
+.info-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.info-row:last-child { border-bottom: none; padding-bottom: 0; }
+.info-label { font-size: 12px; color: var(--text-soft); }
+.info-value { font-size: 14px; font-weight: 500; color: var(--text); }
 
-  /* WELCOME CARD at bottom */
-  .welcome-card {
-    margin: 4px 18px 32px;
-    background: white;
-    border-radius: var(--radius);
-    padding: 20px 22px;
-    box-shadow: var(--shadow);
-    position: relative;
-    border-left: 4px solid var(--terracotta);
-  }
-  .welcome-card .quote-mark {
-    font-family: 'Playfair Display', serif;
-    font-size: 52px; line-height:1;
-    color: var(--terracotta); opacity:.25;
-    position:absolute; top:8px; left:16px;
-    pointer-events:none;
-  }
-  .welcome-card p {
-    font-size: 14px; line-height: 1.7;
-    font-style: italic; color: var(--text-soft);
-    padding-left: 4px; margin-top:14px;
-  }
-  .welcome-card .author {
-    display: flex; align-items:center; gap:8px;
-    margin-top: 14px; padding-top:12px;
-    border-top: 1px solid var(--warm);
-  }
-  .author-avatar {
-    width:32px; height:32px; border-radius:50%;
-    background: linear-gradient(135deg, var(--terracotta), var(--sand));
-    display:flex; align-items:center; justify-content:center;
-    font-size:15px; flex-shrink:0;
-  }
-  .author-name { font-size:13px; font-weight:600; color:var(--text); }
-  .author-role { font-size:11px; color:var(--text-soft); }
-  .icon-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-  .icon-btn {
-    display: flex; flex-direction:column;
-    align-items: center; gap: 8px;
-    background: white;
-    border: none; border-radius: 18px;
-    padding: 18px 8px 14px;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(42,31,20,0.08);
-    transition: transform .18s, box-shadow .18s;
-    position: relative; overflow:hidden;
-  }
-  .icon-btn:active { transform: scale(0.94); box-shadow: 0 2px 8px rgba(42,31,20,0.1); }
-  .icon-btn .ico {
-    width: 48px; height: 48px;
-    border-radius: 14px;
-    display: flex; align-items:center; justify-content:center;
-    font-size: 22px;
-  }
-  .icon-btn .lbl { font-size: 11px; font-weight:500; color: var(--text); text-align:center; line-height:1.2; }
+/* WIFI */
+.wifi-card { background: var(--text); border-radius: var(--radius); padding: 26px 22px; margin-bottom: 10px; text-align: center; position: relative; overflow: hidden; }
+.wifi-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 75% 25%, rgba(184,150,90,.22), transparent 55%); }
+.wifi-ico { margin-bottom: 18px; position: relative; z-index: 1; }
+.wifi-ico svg { width: 38px; height: 38px; stroke: var(--gold); stroke-width: 1.3; fill: none; }
+.wifi-field { margin-bottom: 10px; position: relative; z-index: 1; }
+.wifi-field-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 3px; }
+.wifi-field-val { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: white; letter-spacing: 1px; }
+.copy-btn { display: inline-flex; align-items: center; gap: 7px; background: var(--gold); border: none; border-radius: 100px; color: white; font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 10px 22px; cursor: pointer; margin-top: 8px; position: relative; z-index: 1; transition: opacity .2s; }
+.copy-btn:active { opacity: .75; }
+.copy-btn svg { width: 13px; height: 13px; stroke: white; stroke-width: 2; fill: none; }
 
-  .ico.terracotta { background: #FDEEE8; }
-  .ico.sage       { background: #EDF1EA; }
-  .ico.sand       { background: #FBF3E4; }
-  .ico.navy       { background: #E8EDF2; }
-  .ico.rose       { background: #FDEEF2; }
-  .ico.gold       { background: #FBF5E4; }
+/* RULES */
+.rule-item { display: flex; gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--line); }
+.rule-item:last-child { border-bottom: none; padding-bottom: 0; }
+.rule-num { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; color: var(--gold); line-height: 1; flex-shrink: 0; width: 24px; text-align: right; margin-top: -2px; }
+.rule-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.rule-desc { font-size: 13px; line-height: 1.65; color: var(--text-mid); }
 
-  /* ── INNER PAGES ── */
-  .page-header {
-    background: linear-gradient(135deg, var(--terracotta), var(--sand));
-    padding: 52px 24px 28px;
-    position: relative; overflow:hidden;
-  }
-  .page-header::after {
-    content:''; position:absolute;
-    width:200px; height:200px; border-radius:50%;
-    background: rgba(255,255,255,0.08);
-    top:-60px; right:-60px;
-  }
-  .back-btn {
-    position:absolute; top:16px; left:16px;
-    background: rgba(255,255,255,0.2);
-    border: none; border-radius: 50%;
-    width:40px; height:40px;
-    display:flex; align-items:center; justify-content:center;
-    font-size: 20px; color:white; cursor:pointer;
-    backdrop-filter: blur(6px);
-  }
-  .page-icon { font-size: 36px; margin-bottom: 10px; }
-  .page-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px; color:white; font-weight:700;
-  }
-  .page-body { padding: 24px 20px 40px; flex:1; overflow-y:auto; }
+/* SPACES */
+.space-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; margin-bottom: 10px; }
+.space-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.space-icon svg { width: 22px; height: 22px; stroke: var(--gold); stroke-width: 1.4; fill: none; }
+.space-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: var(--text); }
+.space-desc { font-size: 13px; line-height: 1.7; color: var(--text-mid); margin-bottom: 10px; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { background: var(--cream); border-radius: 100px; padding: 4px 11px; font-size: 11px; color: var(--text-mid); }
 
-  /* CARDS */
-  .card {
-    background: white;
-    border-radius: var(--radius);
-    padding: 20px;
-    margin-bottom: 14px;
-    box-shadow: var(--shadow);
-  }
-  .card-title {
-    font-size: 13px; font-weight:500; letter-spacing:1px;
-    text-transform:uppercase; color: var(--terracotta);
-    margin-bottom: 10px;
-  }
-  .card p { font-size: 15px; line-height: 1.7; color: var(--text-soft); }
-  .card strong { color: var(--text); }
+/* PLACES */
+.place-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; display: flex; gap: 14px; }
+.place-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 6px; }
+.place-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: var(--text); margin-bottom: 4px; }
+.place-desc { font-size: 13px; line-height: 1.65; color: var(--text-mid); margin-bottom: 7px; }
+.place-dist { font-size: 10px; color: var(--gold); font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
 
-  /* WIFI BOX */
-  .wifi-box {
-    background: linear-gradient(135deg, var(--navy), #3d5a73);
-    border-radius: var(--radius); padding: 24px;
-    text-align: center; color:white; margin-bottom:14px;
-    box-shadow: var(--shadow);
-  }
-  .wifi-box .wifi-icon { font-size:40px; margin-bottom:12px; }
-  .wifi-field {
-    background: rgba(255,255,255,0.12);
-    border-radius: 12px; padding: 12px 16px;
-    margin-bottom: 10px;
-  }
-  .wifi-field label { font-size:11px; opacity:.65; letter-spacing:1px; text-transform:uppercase; }
-  .wifi-field .value { font-size: 18px; font-weight:700; margin-top:4px; letter-spacing:1px; }
-  .copy-btn {
-    display: inline-flex; align-items:center; gap:6px;
-    background: var(--terracotta); border:none; border-radius:12px;
-    color:white; font-size:13px; font-weight:500;
-    padding: 10px 20px; cursor:pointer; margin-top:6px;
-    font-family: 'DM Sans', sans-serif;
-    transition: opacity .2s;
-  }
-  .copy-btn:active { opacity:.75; }
+/* RESTAURANTS */
+.resto-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-bottom: 10px; }
+.resto-img { height: 80px; background: var(--cream); display: flex; align-items: center; justify-content: center; position: relative; }
+.resto-img svg { width: 28px; height: 28px; stroke: var(--gold-light); stroke-width: 1.2; fill: none; opacity: .7; }
+.resto-img-lbl { position: absolute; bottom: 7px; right: 10px; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-soft); }
+.resto-body { padding: 14px 16px 16px; }
+.resto-name { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; color: var(--text); margin-bottom: 2px; }
+.resto-type { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.resto-desc { font-size: 13px; line-height: 1.65; color: var(--text-mid); margin-bottom: 12px; }
+.resto-footer { display: flex; align-items: center; justify-content: space-between; }
+.guide-btn { display: inline-flex; align-items: center; gap: 5px; background: var(--gold); color: white; border: none; border-radius: 100px; font-family: 'Jost', sans-serif; font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 14px; cursor: pointer; transition: opacity .2s; text-decoration: none; }
+.guide-btn:active { opacity: .75; }
+.guide-btn svg { width: 11px; height: 11px; stroke: white; stroke-width: 2; fill: none; }
 
-  /* RULES LIST */
-  .rule-item {
-    display:flex; gap:14px; align-items:flex-start;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--warm);
-  }
-  .rule-item:last-child { border-bottom:none; }
-  .rule-num {
-    width:28px; height:28px; border-radius:50%;
-    background: var(--warm); color: var(--terracotta);
-    font-weight:700; font-size:13px;
-    display:flex; align-items:center; justify-content:center;
-    flex-shrink:0; margin-top:1px;
-  }
-  .rule-text { font-size:15px; line-height:1.6; color:var(--text-soft); }
-  .rule-text strong { color:var(--text); display:block; margin-bottom:2px; }
+/* SERVICES */
+.service-row { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.service-row:last-child { border-bottom: none; padding-bottom: 0; }
+.service-icon { flex-shrink: 0; margin-top: 2px; }
+.service-icon svg { width: 19px; height: 19px; stroke: var(--gold); stroke-width: 1.5; fill: none; }
+.service-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.service-desc { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
 
-  /* PLACES */
-  .place-card {
-    background:white; border-radius:16px;
-    overflow:hidden; margin-bottom:14px;
-    box-shadow: var(--shadow); display:flex;
-  }
-  .place-color {
-    width:6px; flex-shrink:0;
-  }
-  .place-info { padding: 16px 16px 16px 14px; flex:1; }
-  .place-name { font-weight:600; font-size:15px; margin-bottom:4px; }
-  .place-desc { font-size:13px; color:var(--text-soft); line-height:1.5; }
-  .place-dist { font-size:12px; color:var(--terracotta); font-weight:500; margin-top:6px; }
+/* EMERGENCY */
+.sos-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+.sos-icon { width: 44px; height: 44px; border-radius: 13px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sos-icon svg { width: 21px; height: 21px; fill: none; stroke-width: 1.5; }
+.sos-info { flex: 1; }
+.sos-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.sos-desc { font-size: 12px; color: var(--text-soft); }
+.call-btn { display: flex; align-items: center; gap: 5px; background: var(--text); color: white; border: none; border-radius: 100px; font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 500; padding: 8px 13px; cursor: pointer; text-decoration: none; transition: opacity .2s; white-space: nowrap; }
+.call-btn.gold { background: var(--gold); }
+.call-btn:active { opacity: .75; }
+.call-btn svg { width: 12px; height: 12px; stroke: white; stroke-width: 2; fill: none; }
 
-  /* RESTAURANTS */
-  .resto-card {
-    background:white; border-radius:16px; padding:18px;
-    margin-bottom:14px; box-shadow: var(--shadow);
-  }
-  .resto-header { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
-  .resto-emoji { font-size:30px; }
-  .resto-name { font-weight:700; font-size:16px; }
-  .resto-type { font-size:12px; color:var(--text-soft); }
-  .resto-stars { color: var(--sand); font-size:14px; margin-bottom:4px; }
-  .resto-desc { font-size:14px; color:var(--text-soft); line-height:1.5; }
-  .resto-tag {
-    display:inline-block; background:var(--warm);
-    border-radius:20px; padding:3px 10px;
-    font-size:11px; color:var(--terracotta); font-weight:500;
-    margin: 8px 4px 0 0;
-  }
+/* CONTACT BAR */
+.contact-bar { background: var(--text); border-radius: var(--radius); padding: 18px 18px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; position: relative; overflow: hidden; }
+.contact-bar::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 80% 50%, rgba(184,150,90,.2), transparent 55%); }
+.contact-bar-text { position: relative; z-index: 1; }
+.contact-bar-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 3px; }
+.contact-bar-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; color: white; font-weight: 300; }
+.contact-bar-btn { position: relative; z-index: 1; background: var(--gold); border: none; border-radius: 100px; color: white; font-family: 'Jost', sans-serif; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; padding: 9px 16px; cursor: pointer; font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 5px; transition: opacity .2s; }
+.contact-bar-btn svg { width: 12px; height: 12px; stroke: white; stroke-width: 2; fill: none; }
+.contact-bar-btn:active { opacity: .75; }
 
-  /* EMERGENCY */
-  .sos-header {
-    background: linear-gradient(135deg, #C0392B, #E74C3C);
-  }
-  .emergency-card {
-    background:white; border-radius:16px; padding:18px;
-    margin-bottom:12px; box-shadow:var(--shadow);
-    display:flex; align-items:center; gap:16px;
-  }
-  .emergency-icon {
-    width:52px; height:52px; border-radius:16px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:24px; flex-shrink:0;
-  }
-  .emergency-info { flex:1; }
-  .emergency-name { font-weight:700; font-size:15px; margin-bottom:2px; }
-  .emergency-desc { font-size:13px; color:var(--text-soft); }
-  .call-btn {
-    background: linear-gradient(135deg, #C0392B, #E74C3C);
-    color:white; border:none; border-radius:12px;
-    padding: 10px 16px; font-size:14px; font-weight:600;
-    cursor:pointer; font-family:'DM Sans',sans-serif;
-    display:flex; align-items:center; gap:6px;
-    text-decoration:none;
-  }
-
-  /* CHECKOUT */
-  .checkout-step {
-    display:flex; gap:16px; padding:18px 0;
-    border-bottom: 1px dashed var(--warm);
-  }
-  .checkout-step:last-child { border-bottom:none; }
-  .step-circle {
-    width:36px; height:36px; border-radius:50%;
-    background: linear-gradient(135deg, var(--terracotta), var(--sand));
-    color:white; font-weight:700; font-size:15px;
-    display:flex; align-items:center; justify-content:center;
-    flex-shrink:0;
-  }
-  .step-content {}
-  .step-title { font-weight:600; font-size:15px; margin-bottom:4px; }
-  .step-desc { font-size:14px; color:var(--text-soft); line-height:1.55; }
-
-  /* CHECKIN */
-  .info-row {
-    display:flex; justify-content:space-between; align-items:center;
-    padding: 14px 0; border-bottom: 1px solid var(--warm);
-  }
-  .info-row:last-child { border-bottom:none; }
-  .info-label { font-size:13px; color:var(--text-soft); font-weight:400; }
-  .info-value { font-size:15px; font-weight:600; color:var(--text); }
-
-  /* SPACES */
-  .space-card {
-    background:white; border-radius:16px; padding:20px;
-    margin-bottom:14px; box-shadow:var(--shadow);
-  }
-  .space-header { display:flex; gap:12px; align-items:center; margin-bottom:10px; }
-  .space-emoji { font-size:28px; }
-  .space-name { font-weight:700; font-size:16px; }
-  .space-desc { font-size:14px; color:var(--text-soft); line-height:1.6; }
-  .feature-list { margin-top:12px; display:flex; flex-wrap:wrap; gap:8px; }
-  .feature-tag {
-    background:var(--warm); border-radius:20px;
-    padding:5px 12px; font-size:12px; color:var(--text);
-  }
-
-  /* POSITION */
-  .map-placeholder {
-    background: linear-gradient(135deg, #e8f4e8, #d4e8d4);
-    border-radius: 16px; height:200px;
-    display:flex; flex-direction:column;
-    align-items:center; justify-content:center;
-    margin-bottom:14px; gap:8px;
-    border: 2px dashed var(--sage);
-    color: var(--sage);
-    font-size:14px; text-align:center; padding:20px;
-  }
-
-  /* BOTTOM NAV */
-  .bottom-nav {
-    position:fixed; bottom:0; left:50%; transform:translateX(-50%);
-    width:100%; max-width:430px;
-    background:white;
-    border-top: 1px solid var(--warm);
-    display:flex; padding: 10px 0 20px;
-    z-index: 100;
-  }
-  .nav-item {
-    flex:1; display:flex; flex-direction:column;
-    align-items:center; gap:3px;
-    font-size:10px; font-weight:500; color:var(--text-soft);
-    cursor:pointer; padding:4px 0;
-    transition: color .2s;
-    border:none; background:none; font-family:'DM Sans',sans-serif;
-  }
-  .nav-item.active { color:var(--terracotta); }
-  .nav-item .nav-ico { font-size:20px; }
-
-  /* SERVICES PAGE */
-  .service-item {
-    display:flex; gap:14px; align-items:center;
-    padding:16px 0; border-bottom:1px solid var(--warm);
-  }
-  .service-item:last-child { border-bottom:none; }
-  .service-icon {
-    width:44px; height:44px; border-radius:14px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:22px; flex-shrink:0; background:var(--warm);
-  }
-  .service-info { flex:1; }
-  .service-name { font-weight:600; font-size:15px; margin-bottom:2px; }
-  .service-desc { font-size:13px; color:var(--text-soft); }
+/* STEPS */
+.step-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.step-item:last-child { border-bottom: none; padding-bottom: 0; }
+.step-num { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 300; color: var(--gold); line-height: 1; flex-shrink: 0; width: 26px; text-align: right; margin-top: -4px; }
+.step-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.step-desc { font-size: 13px; line-height: 1.65; color: var(--text-mid); }
 </style>
 </head>
 <body>
+<div class="app">
 
-<!-- ════════════════════════════════ HOME ════════════════════════════════ -->
-<div id="home" class="screen active">
+  <!-- TOP NAV -->
+  <nav class="top-nav">
+    <button class="nav-tab active" onclick="showScreen('home',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+      <span class="tab-label">Home</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('checkin',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M6.343 6.343a8 8 0 100 11.314"/><path d="M17.657 6.343A8 8 0 1117.657 17.657"/></svg></span>
+      <span class="tab-label">Check-in</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('wifi',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg></span>
+      <span class="tab-label">WiFi</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('regole',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+      <span class="tab-label">Regole</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('spazi',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+      <span class="tab-label">Spazi</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('visitare',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+      <span class="tab-label">Luoghi</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('ristoranti',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></span>
+      <span class="tab-label">Ristoranti</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('servizi',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+      <span class="tab-label">Servizi</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('emergenza',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+      <span class="tab-label">SOS</span>
+    </button>
+    <button class="nav-tab" onclick="showScreen('checkout',this)">
+      <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+      <span class="tab-label">Check-out</span>
+    </button>
+  </nav>
 
-  <!-- HERO HEADER -->
-  <div class="home-hero">
-    <div class="hero-circle"></div>
-    <div class="property-badge"><span>🏡</span> Casa sul Mare — Porto Antico</div>
-    <div class="home-logo-row">
-      <div class="home-logo">🌊</div>
-      <div class="home-title-block">
-        <h1 class="home-title">Benvenuto<br>nella tua casa!</h1>
-        <p class="home-subtitle">La tua guida personale</p>
+  <!-- HOME -->
+  <div id="home" class="screen active">
+    <div class="home-hero">
+      <div class="home-eyebrow">Porto Antico · Italia</div>
+      <div class="home-dear">Dear Guest,</div>
+      <div class="home-welcome">Welcome!</div>
+      <div class="home-sub">Click on the icons</div>
+      <div class="home-ornament"><span>✦ ✦ ✦</span></div>
+      <div class="home-property">Casa sul Mare</div>
+    </div>
+    <div class="home-grid">
+      <div class="grid-eyebrow">La tua guida completa</div>
+      <div class="icon-grid">
+        <button class="icon-btn" onclick="goTo('checkin',1)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></span>
+          <span class="btn-label">Check-in</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('wifi',2)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg></span>
+          <span class="btn-label">WiFi</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('regole',3)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+          <span class="btn-label">House Rules</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('spazi',4)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+          <span class="btn-label">Spazi</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('visitare',5)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span class="btn-label">Da Visitare</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('ristoranti',6)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></span>
+          <span class="btn-label">Ristoranti</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('servizi',7)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+          <span class="btn-label">Servizi</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('emergenza',8)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+          <span class="btn-label">Emergenza</span>
+        </button>
+        <button class="icon-btn" onclick="goTo('checkout',9)">
+          <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+          <span class="btn-label">Check-out</span>
+        </button>
+      </div>
+    </div>
+    <div class="welcome-wrap">
+      <div class="welcome-card">
+        <p class="welcome-text">Siamo felici di ospitarti! Abbiamo preparato questa guida per rendere il tuo soggiorno perfetto. Non esitare a contattarci per qualsiasi cosa — siamo qui per te.</p>
+        <div class="welcome-author">
+          <div class="author-mono"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div><div class="author-name">Marco &amp; Giulia</div><div class="author-role">I vostri host</div></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ICON GRID -->
-  <div class="grid-container">
-    <div class="grid-label">Esplora la guida</div>
-    <div class="icon-grid">
-      <button class="icon-btn" onclick="goTo('checkin')">
-        <div class="ico terracotta">🗝️</div>
-        <span class="lbl">Check-in</span>
-      </button>
-      <button class="icon-btn" onclick="goTo('wifi')">
-        <div class="ico sage">📶</div>
-        <span class="lbl">WiFi</span>
-      </button>
-      <button class="icon-btn" onclick="goTo('regole')">
-        <div class="ico sand">📋</div>
-        <span class="lbl">Regole</span>
-      </button>
-      <button class="icon-btn" onclick="goTo('spazi')">
-        <div class="ico navy">🛋️</div>
-        <span class="lbl">Gli Spazi</span>
-      </button>
-      <button class="icon-btn" onclick="goTo('visitare')">
-        <div class="ico rose">📍</div>
-        <span class="lbl">Da Visitare</span>
-      </button>
-      <button class="icon-btn" onclick="goTo('servizi')">
-        <div class="ico gold">⭐</div>
-        <span class="lbl">Servizi</span>
-      </button>
-      <button class="icon-btn" onclick="goTo('ristoranti')">
-        <div class="ico terracotta">🍽️</div>
-        <span class="lbl">Ristoranti</span>
-      </button>
-      <button class="icon-btn" onclick="goTo('emergenza')">
-        <div class="ico rose">🆘</div>
-        <span class="lbl">Emergenza</span>
-      </button>
-      <button class="icon-btn" onclick="goTo('checkout')">
-        <div class="ico sage">👋</div>
-        <span class="lbl">Check-out</span>
-      </button>
+  <!-- CHECK-IN -->
+  <div id="checkin" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Informazioni</div><div class="page-title">Check-in &amp; Accesso</div></div>
+    <div class="page-body">
+      <div class="card"><div class="card-label">Orari &amp; Info</div>
+        <div class="info-row"><span class="info-label">Check-in</span><span class="info-value">dalle 15:00</span></div>
+        <div class="info-row"><span class="info-label">Check-out</span><span class="info-value">entro le 11:00</span></div>
+        <div class="info-row"><span class="info-label">Ospiti massimi</span><span class="info-value">4 persone</span></div>
+        <div class="info-row"><span class="info-label">Indirizzo</span><span class="info-value">Via del Mare, 12</span></div>
+      </div>
+      <div class="card"><div class="card-label">Come accedere</div>
+        <p>La cassetta delle chiavi è <strong>a sinistra del portone</strong>. Codice: <strong>2847</strong> — premi ★ poi il codice. Usa la chiave con il portachiavi blu.</p>
+      </div>
+      <div class="card"><div class="card-label">Parcheggio</div>
+        <p>Posto auto riservato nel cortile interno. Accesso dal cancello su <strong>Via Garibaldi</strong>, stesso codice: <strong>2847</strong>.</p>
+      </div>
+      <a href="https://maps.google.com" target="_blank" class="guide-btn" style="width:100%;justify-content:center;border-radius:14px;padding:13px;font-size:10px;letter-spacing:1.5px;">
+        <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:white;stroke-width:2;fill:none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Indicazioni stradali
+      </a>
     </div>
   </div>
 
-  <!-- WELCOME MESSAGE (bottom) -->
-  <div class="welcome-card">
-    <div class="quote-mark">"</div>
-    <p>Siamo felici di ospitarti! Abbiamo preparato questa piccola guida per rendere il tuo soggiorno perfetto. Non esitare a contattarci per qualsiasi cosa — siamo qui per te.</p>
-    <div class="author">
-      <div class="author-avatar">👫</div>
-      <div>
-        <div class="author-name">Marco &amp; Giulia</div>
-        <div class="author-role">I tuoi host ❤️</div>
+  <!-- WIFI -->
+  <div id="wifi" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Connettività</div><div class="page-title">WiFi</div></div>
+    <div class="page-body">
+      <div class="wifi-card">
+        <div class="wifi-ico"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg></div>
+        <div class="wifi-field"><div class="wifi-field-lbl">Nome Rete</div><div class="wifi-field-val">CasaSulMare_Guest</div></div>
+        <div class="wifi-field"><div class="wifi-field-lbl">Password</div><div class="wifi-field-val" id="pwd">mare2024</div></div>
+        <button class="copy-btn" onclick="copyPwd(this)">
+          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copia Password
+        </button>
+      </div>
+      <div class="card"><div class="card-label">Nota</div><p>Segnale ottimale in salotto e camera. In caso di problemi riavvia il router (box bianco in cucina) tenendo il tasto laterale per 10 secondi.</p></div>
+    </div>
+  </div>
+
+  <!-- REGOLE -->
+  <div id="regole" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Da Rispettare</div><div class="page-title">House Rules</div></div>
+    <div class="page-body">
+      <div class="card">
+        <div class="rule-item"><div class="rule-num">1</div><div><div class="rule-title">Silenzio Notturno</div><div class="rule-desc">Dalle 23:00 alle 8:00 si prega di mantenere un livello di rumore ridotto.</div></div></div>
+        <div class="rule-item"><div class="rule-num">2</div><div><div class="rule-title">Niente Fumo</div><div class="rule-desc">Vietato fumare negli spazi interni. Consentito sul balcone con il posacenere.</div></div></div>
+        <div class="rule-item"><div class="rule-num">3</div><div><div class="rule-title">Animali Domestici</div><div class="rule-desc">I pet sono benvenuti previa comunicazione. Non lasciarli su divano o letti.</div></div></div>
+        <div class="rule-item"><div class="rule-num">4</div><div><div class="rule-title">Ospiti Aggiuntivi</div><div class="rule-desc">Gli ospiti non registrati non possono pernottare. Contatta l'host per aggiunte.</div></div></div>
+        <div class="rule-item"><div class="rule-num">5</div><div><div class="rule-title">Raccolta Differenziata</div><div class="rule-desc">Sacchi sotto il lavello: <strong>giallo</strong> plastica · <strong>blu</strong> carta · <strong>grigio</strong> indifferenziato.</div></div></div>
+        <div class="rule-item"><div class="rule-num">6</div><div><div class="rule-title">Cura degli Spazi</div><div class="rule-desc">Trattate la casa con rispetto. Per rotture accidentali, segnalate senza problemi.</div></div></div>
       </div>
     </div>
   </div>
 
-</div>
+  <!-- SPAZI -->
+  <div id="spazi" class="screen">
+    <div class="page-header"><div class="page-eyebrow">L'Appartamento</div><div class="page-title">Gli Spazi</div></div>
+    <div class="page-body">
+      <div class="space-card">
+        <div class="space-header"><span class="space-icon"><svg viewBox="0 0 24 24"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 010 4H2"/><path d="M2 20h20"/></svg></span><div class="space-name">Camera da Letto</div></div>
+        <p class="space-desc">Letto matrimoniale con materasso memory foam. Biancheria fresca. Cuscini extra nell'armadio a sinistra.</p>
+        <div class="tag-row"><span class="tag">Aria condizionata</span><span class="tag">Smart TV 43"</span><span class="tag">Cassaforte</span></div>
+      </div>
+      <div class="space-card">
+        <div class="space-header"><span class="space-icon"><svg viewBox="0 0 24 24"><path d="M3 2h18v6H3zM3 14h18v6H3z"/><line x1="12" y1="8" x2="12" y2="14"/></svg></span><div class="space-name">Cucina</div></div>
+        <p class="space-desc">Completamente attrezzata. Caffè e tè nel pensile a destra. Moka da 6 nel secondo cassetto.</p>
+        <div class="tag-row"><span class="tag">Macchinetta</span><span class="tag">Fornelli gas</span><span class="tag">Lavastoviglie</span></div>
+      </div>
+      <div class="space-card">
+        <div class="space-header"><span class="space-icon"><svg viewBox="0 0 24 24"><path d="M9 6 C9 3.8 10.8 2 13 2s4 1.8 4 4v4H5v3a6 6 0 0012 0v-1"/><line x1="5" y1="10" x2="19" y2="10"/></svg></span><div class="space-name">Bagno</div></div>
+        <p class="space-desc">Doccia con idromassaggio. Asciugamani nell'armadietto a muro. Phon nel cassetto sotto il lavabo.</p>
+        <div class="tag-row"><span class="tag">Idromassaggio</span><span class="tag">Acqua calda istantanea</span></div>
+      </div>
+      <div class="space-card">
+        <div class="space-header"><span class="space-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></span><div class="space-name">Balcone</div></div>
+        <p class="space-desc">Vista sul porto. Tavolo e due sedie. Perfetto per la colazione con la luce del mattino.</p>
+        <div class="tag-row"><span class="tag">Vista mare</span><span class="tag">Orientamento Est</span></div>
+      </div>
+    </div>
+  </div>
 
-<!-- ════════════════════════════════ CHECK-IN ════════════════════════════════ -->
-<div id="checkin" class="screen">
-  <div class="page-header">
-    <button class="back-btn" onclick="goTo('home')">←</button>
-    <div class="page-icon">🗝️</div>
-    <h2 class="page-title">Check-in</h2>
-  </div>
-  <div class="page-body">
-    <div class="card">
-      <div class="card-title">Informazioni Soggiorno</div>
-      <div class="info-row">
-        <span class="info-label">Check-in</span>
-        <span class="info-value">dalle 15:00</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Check-out</span>
-        <span class="info-value">entro le 11:00</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Ospiti massimi</span>
-        <span class="info-value">4 persone</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Indirizzo</span>
-        <span class="info-value">Via del Mare, 12</span>
-      </div>
+  <!-- DA VISITARE -->
+  <div id="visitare" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Dintorni</div><div class="page-title">Places to Visit</div></div>
+    <div class="page-body">
+      <div class="place-card"><div class="place-dot"></div><div>
+        <div class="place-name">Castello Aragonese</div>
+        <p class="place-desc">Fortezza medievale con vista panoramica sul golfo. Da non perdere al tramonto.</p>
+        <div class="place-dist">8 min a piedi</div>
+      </div></div>
+      <div class="place-card"><div class="place-dot"></div><div>
+        <div class="place-name">Spiaggia della Caletta</div>
+        <p class="place-desc">Caletta nascosta con acqua cristallina, accessibile lungo il sentiero dei pescatori.</p>
+        <div class="place-dist">15 min a piedi</div>
+      </div></div>
+      <div class="place-card"><div class="place-dot"></div><div>
+        <div class="place-name">Porto Antico</div>
+        <p class="place-desc">Passeggiata tra pescherecci colorati, bar e gelaterie. Il cuore della vita locale.</p>
+        <div class="place-dist">2 min a piedi</div>
+      </div></div>
+      <div class="place-card"><div class="place-dot"></div><div>
+        <div class="place-name">Giardini Botanici</div>
+        <p class="place-desc">Riserva naturale con piante mediterranee rare. Biglietto €5, aperto 9:00–18:00.</p>
+        <div class="place-dist">20 min in auto</div>
+      </div></div>
     </div>
+  </div>
 
-    <div class="card">
-      <div class="card-title">Come Accedere</div>
-      <p>Il codice della cassetta delle chiavi è <strong>2847</strong>. La cassetta si trova a sinistra del portone principale.<br><br>
-      Premi il tasto ★ poi inserisci il codice. Le chiavi sono all'interno — usa quella con il portachiavi <strong>blu</strong> per la porta d'ingresso.</p>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Parcheggio</div>
-      <p>Hai a disposizione un posto auto riservato nel cortile interno. Accesso dal cancello laterale su <strong>Via Garibaldi</strong> — stesso codice della cassetta: <strong>2847</strong>.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════ WIFI ════════════════════════════════ -->
-<div id="wifi" class="screen">
-  <div class="page-header" style="background: linear-gradient(135deg, #2C3E50, #4A6278);">
-    <button class="back-btn" onclick="goTo('home')">←</button>
-    <div class="page-icon">📶</div>
-    <h2 class="page-title">Connessione WiFi</h2>
-  </div>
-  <div class="page-body">
-    <div class="wifi-box">
-      <div class="wifi-icon">📡</div>
-      <div class="wifi-field">
-        <label>Nome Rete</label>
-        <div class="value">CasaSulMare_Guest</div>
-      </div>
-      <div class="wifi-field">
-        <label>Password</label>
-        <div class="value" id="pwd">mare2024</div>
-      </div>
-      <button class="copy-btn" onclick="copyPwd()">📋 Copia Password</button>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Note sulla Connessione</div>
-      <p>La fibra copre tutto l'appartamento. Per streaming o videochiamate il segnale è migliore nel salotto e in camera da letto.<br><br>
-      In caso di problemi, riavvia il router (box bianco in cucina) tenendo premuto il tasto laterale per 10 secondi.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════ REGOLE ════════════════════════════════ -->
-<div id="regole" class="screen">
-  <div class="page-header" style="background: linear-gradient(135deg, #7A8C6E, #A8BA96);">
-    <button class="back-btn" onclick="goTo('home')">←</button>
-    <div class="page-icon">📋</div>
-    <h2 class="page-title">Regole della Casa</h2>
-  </div>
-  <div class="page-body">
-    <div class="card">
-      <div class="rule-item">
-        <div class="rule-num">1</div>
-        <div class="rule-text"><strong>Silenzio Notturno</strong>Dalle 23:00 alle 8:00 si prega di mantenere un livello di rumore basso, in rispetto dei vicini.</div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">2</div>
-        <div class="rule-text"><strong>Niente Fumo</strong>È vietato fumare in tutti gli spazi interni. È consentito sul balcone usando il posacenere.</div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">3</div>
-        <div class="rule-text"><strong>Animali Domestici</strong>Previa comunicazione, i pet sono benvenuti! Ti chiediamo di non lasciarli sul divano o sui letti.</div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">4</div>
-        <div class="rule-text"><strong>Ospiti Aggiuntivi</strong>Gli ospiti non registrati non possono pernottare. Per aggiungere persone contatta il tuo host.</div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">5</div>
-        <div class="rule-text"><strong>Raccolta Differenziata</strong>I sacchi colorati sotto il lavello: <strong>giallo</strong> = plastica, <strong>blu</strong> = carta, <strong>grigio</strong> = indifferenziato.</div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">6</div>
-        <div class="rule-text"><strong>Cura degli Spazi</strong>Grazie per trattare la casa con rispetto. In caso di rotture accidentali, segnalalo senza problemi.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════ SPAZI ════════════════════════════════ -->
-<div id="spazi" class="screen">
-  <div class="page-header" style="background: linear-gradient(135deg, #2C3E50, #3d5a73);">
-    <button class="back-btn" onclick="goTo('home')">←</button>
-    <div class="page-icon">🛋️</div>
-    <h2 class="page-title">Gli Spazi</h2>
-  </div>
-  <div class="page-body">
-    <div class="space-card">
-      <div class="space-header">
-        <div class="space-emoji">🛌</div>
-        <div class="space-name">Camera da Letto</div>
-      </div>
-      <div class="space-desc">Letto matrimoniale con materasso memory foam. Biancheria fresca di lavanderia. Cuscini extra nell'armadio a sinistra.</div>
-      <div class="feature-list">
-        <span class="feature-tag">🌡️ Aria condizionata</span>
-        <span class="feature-tag">📺 Smart TV 43"</span>
-        <span class="feature-tag">🔒 Cassaforte</span>
-      </div>
-    </div>
-    <div class="space-card">
-      <div class="space-header">
-        <div class="space-emoji">🍳</div>
-        <div class="space-name">Cucina</div>
-      </div>
-      <div class="space-desc">Completamente attrezzata. Trovi caffè, tè e zucchero nel pensile a destra. Il moka da 6 tazze è nel secondo cassetto.</div>
-      <div class="feature-list">
-        <span class="feature-tag">☕ Macchinetta</span>
-        <span class="feature-tag">🥘 Fornelli gas</span>
-        <span class="feature-tag">🧊 Frigorifero</span>
-        <span class="feature-tag">🍽️ Lavastoviglie</span>
-      </div>
-    </div>
-    <div class="space-card">
-      <div class="space-header">
-        <div class="space-emoji">🛁</div>
-        <div class="space-name">Bagno</div>
-      </div>
-      <div class="space-desc">Doccia con idromassaggio. Asciugamani puliti nell'armadietto. Phon nel cassetto sotto il lavabo.</div>
-      <div class="feature-list">
-        <span class="feature-tag">💆 Idromassaggio</span>
-        <span class="feature-tag">♨️ Acqua calda istantanea</span>
-      </div>
-    </div>
-    <div class="space-card">
-      <div class="space-header">
-        <div class="space-emoji">🌅</div>
-        <div class="space-name">Balcone</div>
-      </div>
-      <div class="space-desc">Vista sul porto. Tavolo e 2 sedie. Funziona benissimo per la colazione la mattina con la luce del sole!</div>
-      <div class="feature-list">
-        <span class="feature-tag">🌊 Vista mare</span>
-        <span class="feature-tag">🌞 Orientamento Est</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════ DA VISITARE ════════════════════════════════ -->
-<div id="visitare" class="screen">
-  <div class="page-header" style="background: linear-gradient(135deg, #C4603A, #D4855A);">
-    <button class="back-btn" onclick="goTo('home')">←</button>
-    <div class="page-icon">📍</div>
-    <h2 class="page-title">Da Visitare</h2>
-  </div>
-  <div class="page-body">
-    <div class="map-placeholder">
-      <div style="font-size:36px">🗺️</div>
-      <div><strong>Mappa Interattiva</strong><br><small>In questa sezione puoi integrare<br>Google Maps o una mappa personalizzata</small></div>
-    </div>
-
-    <div class="place-card">
-      <div class="place-color" style="background:#C4603A"></div>
-      <div class="place-info">
-        <div class="place-name">🏰 Castello Aragonese</div>
-        <div class="place-desc">Fortezza medievale con vista panoramica sul golfo. Assolutamente da non perdere al tramonto.</div>
-        <div class="place-dist">📍 8 min a piedi</div>
-      </div>
-    </div>
-    <div class="place-card">
-      <div class="place-color" style="background:#7A8C6E"></div>
-      <div class="place-info">
-        <div class="place-name">🏖️ Spiaggia della Caletta</div>
-        <div class="place-desc">Caletta nascosta con acqua cristallina. Accessibile solo a piedi lungo il sentiero dei pescatori.</div>
-        <div class="place-dist">📍 15 min a piedi</div>
-      </div>
-    </div>
-    <div class="place-card">
-      <div class="place-color" style="background:#D4A96A"></div>
-      <div class="place-info">
-        <div class="place-name">⛵ Porto Antico</div>
-        <div class="place-desc">Passeggiata serale tra pescherecci colorati, bar e gelaterie. Il cuore della vita locale.</div>
-        <div class="place-dist">📍 2 min a piedi</div>
-      </div>
-    </div>
-    <div class="place-card">
-      <div class="place-color" style="background:#2C3E50"></div>
-      <div class="place-info">
-        <div class="place-name">🌿 Giardini Botanici</div>
-        <div class="place-desc">Riserva naturale con piante mediterranee rare. Biglietto €5, aperto 9:00–18:00.</div>
-        <div class="place-dist">📍 20 min in auto</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════ RISTORANTI ════════════════════════════════ -->
-<div id="ristoranti" class="screen">
-  <div class="page-header" style="background: linear-gradient(135deg, #9B3F20, #C4603A);">
-    <button class="back-btn" onclick="goTo('home')">←</button>
-    <div class="page-icon">🍽️</div>
-    <h2 class="page-title">Ristoranti</h2>
-  </div>
-  <div class="page-body">
-    <div class="resto-card">
-      <div class="resto-header">
-        <div class="resto-emoji">🐟</div>
-        <div>
+  <!-- RISTORANTI -->
+  <div id="ristoranti" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Consigli dell'host</div><div class="page-title">Where to Eat</div></div>
+    <div class="page-body">
+      <div class="resto-card">
+        <div class="resto-img" style="background:#F5EDE0;"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg><span class="resto-img-lbl">Cucina di mare</span></div>
+        <div class="resto-body">
           <div class="resto-name">Trattoria da Rocco</div>
-          <div class="resto-type">Cucina di mare tradizionale</div>
+          <div class="resto-type">Pesce · Tradizionale</div>
+          <p class="resto-desc">Il migliore della zona. Il pescato è servito solo su prenotazione. Menziona il nostro nome!</p>
+          <div class="resto-footer">
+            <div class="tag-row"><span class="tag">3 min</span><span class="tag">€€</span></div>
+            <a href="https://maps.google.com" target="_blank" class="guide-btn">Guide me here <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          </div>
         </div>
       </div>
-      <div class="resto-stars">★★★★★</div>
-      <div class="resto-desc">Il migliore della zona. Il pescato del giorno viene servito solo su prenotazione. Chiede il nostro nome: spesso fanno un piccolo omaggio!</div>
-      <span class="resto-tag">🚶 3 min</span><span class="resto-tag">€€</span><span class="resto-tag">📞 Prenota</span>
-    </div>
-    <div class="resto-card">
-      <div class="resto-header">
-        <div class="resto-emoji">🍕</div>
-        <div>
-          <div class="resto-name">Pizzeria Il Vecchio Forno</div>
-          <div class="resto-type">Pizza napoletana</div>
+      <div class="resto-card">
+        <div class="resto-img" style="background:#EEF0EB;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span class="resto-img-lbl">Pizza napoletana</span></div>
+        <div class="resto-body">
+          <div class="resto-name">Il Vecchio Forno</div>
+          <div class="resto-type">Pizza · Forno a legna</div>
+          <p class="resto-desc">Dal 1978. La margherita DOP è imperdibile. Ottimo anche per asporto.</p>
+          <div class="resto-footer">
+            <div class="tag-row"><span class="tag">5 min</span><span class="tag">€</span></div>
+            <a href="https://maps.google.com" target="_blank" class="guide-btn">Guide me here <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          </div>
         </div>
       </div>
-      <div class="resto-stars">★★★★☆</div>
-      <div class="resto-desc">Forno a legna dal 1978. La marinara e la margherita DOP sono imperdibili. Ottimo anche per asporto.</div>
-      <span class="resto-tag">🚶 5 min</span><span class="resto-tag">€</span><span class="resto-tag">🕗 Apre 19:00</span>
-    </div>
-    <div class="resto-card">
-      <div class="resto-header">
-        <div class="resto-emoji">☕</div>
-        <div>
+      <div class="resto-card">
+        <div class="resto-img" style="background:#E8ECF0;"><svg viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 010 8h-1"/><path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z"/></svg><span class="resto-img-lbl">Colazione &amp; Aperitivo</span></div>
+        <div class="resto-body">
           <div class="resto-name">Bar Centrale</div>
-          <div class="resto-type">Colazione &amp; Aperitivo</div>
+          <div class="resto-type">Caffè · Aperitivo</div>
+          <p class="resto-desc">Cornetti freschi dal mattino. Aperitivo rinforzato dalle 18:00. Il barista Enzo è leggendario.</p>
+          <div class="resto-footer">
+            <div class="tag-row"><span class="tag">1 min</span><span class="tag">€</span></div>
+            <a href="https://maps.google.com" target="_blank" class="guide-btn">Guide me here <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          </div>
         </div>
       </div>
-      <div class="resto-stars">★★★★☆</div>
-      <div class="resto-desc">Cornetti freschi dal mattino e aperitivo rinforzato dalle 18:00. Il barista Enzo è un'istituzione.</div>
-      <span class="resto-tag">🚶 1 min</span><span class="resto-tag">€</span><span class="resto-tag">🕖 7:00–23:00</span>
     </div>
   </div>
-</div>
 
-<!-- ════════════════════════════════ SERVIZI ════════════════════════════════ -->
-<div id="servizi" class="screen">
-  <div class="page-header" style="background: linear-gradient(135deg, #D4A96A, #C4603A);">
-    <button class="back-btn" onclick="goTo('home')">←</button>
-    <div class="page-icon">⭐</div>
-    <h2 class="page-title">Servizi</h2>
-  </div>
-  <div class="page-body">
-    <div class="card">
-      <div class="service-item">
-        <div class="service-icon">🧺</div>
-        <div class="service-info">
-          <div class="service-name">Cambio Biancheria</div>
-          <div class="service-desc">Su richiesta per soggiorni oltre 5 notti. Gratuito.</div>
-        </div>
-      </div>
-      <div class="service-item">
-        <div class="service-icon">🧹</div>
-        <div class="service-info">
-          <div class="service-name">Pulizia Aggiuntiva</div>
-          <div class="service-desc">Disponibile a €25. Contatta l'host con 24h di anticipo.</div>
-        </div>
-      </div>
-      <div class="service-item">
-        <div class="service-icon">🚗</div>
-        <div class="service-info">
-          <div class="service-name">Transfer Aeroporto</div>
-          <div class="service-desc">Servizio taxi convenzionato. Contattaci per tariffe.</div>
-        </div>
-      </div>
-      <div class="service-item">
-        <div class="service-icon">🛒</div>
-        <div class="service-info">
-          <div class="service-name">Spesa a Domicilio</div>
-          <div class="service-desc">Supermercato locale consegna in 2h. App: "SpesaFacile".</div>
-        </div>
-      </div>
-      <div class="service-item">
-        <div class="service-icon">⛵</div>
-        <div class="service-info">
-          <div class="service-name">Noleggio Barca</div>
-          <div class="service-desc">Gommone 40cv, patente non richiesta sotto 25cv. Da €80/giorno.</div>
-        </div>
+  <!-- SERVIZI -->
+  <div id="servizi" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Extra</div><div class="page-title">Servizi</div></div>
+    <div class="page-body">
+      <div class="card">
+        <div class="service-row"><span class="service-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></span><div><div class="service-name">Cambio Biancheria</div><div class="service-desc">Su richiesta per soggiorni oltre 5 notti. Gratuito.</div></div></div>
+        <div class="service-row"><span class="service-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v13H3z"/><path d="M8 21h8m-4-5v5"/></svg></span><div><div class="service-name">Pulizia Aggiuntiva</div><div class="service-desc">Disponibile a €25. Contatta l'host con 24h di anticipo.</div></div></div>
+        <div class="service-row"><span class="service-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span><div><div class="service-name">Transfer Aeroporto</div><div class="service-desc">Taxi convenzionato. Contattaci per tariffe e disponibilità.</div></div></div>
+        <div class="service-row"><span class="service-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></span><div><div class="service-name">Spesa a Domicilio</div><div class="service-desc">Supermercato locale, consegna in 2h. App: "SpesaFacile".</div></div></div>
+        <div class="service-row"><span class="service-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.69A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.24-1.26a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span><div><div class="service-name">Noleggio Barca</div><div class="service-desc">Gommone 40cv, patente non richiesta sotto 25cv. Da €80/giorno.</div></div></div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- ════════════════════════════════ EMERGENZA ════════════════════════════════ -->
-<div id="emergenza" class="screen">
-  <div class="page-header sos-header">
-    <button class="back-btn" onclick="goTo('home')">←</button>
-    <div class="page-icon">🆘</div>
-    <h2 class="page-title">Emergenze</h2>
-  </div>
-  <div class="page-body">
-    <div class="emergency-card">
-      <div class="emergency-icon" style="background:#FDE8E8">🏥</div>
-      <div class="emergency-info">
-        <div class="emergency-name">Pronto Soccorso</div>
-        <div class="emergency-desc">Ospedale Civile — Via Roma, 45 (12 min in auto)</div>
+  <!-- EMERGENZA -->
+  <div id="emergenza" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Numeri Utili</div><div class="page-title">Emergenze</div></div>
+    <div class="page-body">
+      <div class="sos-card"><div class="sos-icon"><svg viewBox="0 0 24 24" style="stroke:#E74C3C"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="sos-info"><div class="sos-name">Pronto Soccorso</div><div class="sos-desc">Ospedale Civile · 12 min in auto</div></div><a href="tel:118" class="call-btn"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.69A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.24-1.26a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>118</a></div>
+      <div class="sos-card"><div class="sos-icon"><svg viewBox="0 0 24 24" style="stroke:#3498DB"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="sos-info"><div class="sos-name">Carabinieri</div><div class="sos-desc">Piazza Vittoria · 5 min a piedi</div></div><a href="tel:112" class="call-btn"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.69A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.24-1.26a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>112</a></div>
+      <div class="sos-card"><div class="sos-icon"><svg viewBox="0 0 24 24" style="stroke:#E67E22"><path d="M8.56 2.9A7 7 0 0119 9v4l3 3v1H2v-1l3-3V9a7 7 0 014.56-6.1M12 22a2 2 0 002-2h-4a2 2 0 002 2z"/></svg></div><div class="sos-info"><div class="sos-name">Vigili del Fuoco</div><div class="sos-desc">Incendi · allagamenti · emergenze</div></div><a href="tel:115" class="call-btn"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.69A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.24-1.26a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>115</a></div>
+      <div class="contact-bar">
+        <div class="contact-bar-text"><div class="contact-bar-lbl">Host</div><div class="contact-bar-name">Marco &amp; Giulia</div></div>
+        <a href="tel:+393331234567" class="contact-bar-btn"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.69A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.24-1.26a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Chiama ora</a>
       </div>
-      <a href="tel:118" class="call-btn">📞 118</a>
-    </div>
-    <div class="emergency-card">
-      <div class="emergency-icon" style="background:#E8F0FE">👮</div>
-      <div class="emergency-info">
-        <div class="emergency-name">Carabinieri</div>
-        <div class="emergency-desc">Caserma in Piazza Vittoria (5 min a piedi)</div>
-      </div>
-      <a href="tel:112" class="call-btn">📞 112</a>
-    </div>
-    <div class="emergency-card">
-      <div class="emergency-icon" style="background:#FFF3E8">🔥</div>
-      <div class="emergency-info">
-        <div class="emergency-name">Vigili del Fuoco</div>
-        <div class="emergency-desc">Per incendi, allagamenti, emergenze strutturali</div>
-      </div>
-      <a href="tel:115" class="call-btn">📞 115</a>
-    </div>
-    <div class="emergency-card">
-      <div class="emergency-icon" style="background:#E8F5E9">🏠</div>
-      <div class="emergency-info">
-        <div class="emergency-name">Host Marco</div>
-        <div class="emergency-desc">Per qualsiasi problema con l'appartamento</div>
-      </div>
-      <a href="tel:+393331234567" class="call-btn" style="background:var(--terracotta)">📞 Chiama</a>
-    </div>
-    <div class="card" style="margin-top:8px">
-      <div class="card-title">⚡ In caso di blackout</div>
-      <p>Il quadro elettrico è nell'ingresso, armadio a destra. Riattiva tutti gli interruttori dall'alto verso il basso. Se il problema persiste, chiama Marco.</p>
+      <div class="card"><div class="card-label">Blackout</div><p>Quadro elettrico nell'ingresso, armadio a destra. Riattiva gli interruttori dall'alto. Se persiste, chiama Marco.</p></div>
     </div>
   </div>
-</div>
 
-<!-- ════════════════════════════════ CHECK-OUT ════════════════════════════════ -->
-<div id="checkout" class="screen">
-  <div class="page-header" style="background: linear-gradient(135deg, #7A8C6E, #4A6E52);">
-    <button class="back-btn" onclick="goTo('home')">←</button>
-    <div class="page-icon">👋</div>
-    <h2 class="page-title">Check-out</h2>
-  </div>
-  <div class="page-body">
-    <div class="card">
-      <div class="card-title">⏰ Orario</div>
-      <p>Il check-out è entro le <strong>11:00</strong>. Se hai bisogno di partire prima o di conservare i bagagli, contattaci!</p>
-    </div>
-
-    <div class="card">
-      <div class="checkout-step">
-        <div class="step-circle">1</div>
-        <div class="step-content">
-          <div class="step-title">Raccogliere i bagagli</div>
-          <div class="step-desc">Controlla tutti gli armadi, cassetti e il balcone. Verifica che non ci siano oggetti personali lasciati in giro.</div>
-        </div>
+  <!-- CHECK-OUT -->
+  <div id="checkout" class="screen">
+    <div class="page-header"><div class="page-eyebrow">Partenza</div><div class="page-title">Check-out</div></div>
+    <div class="page-body">
+      <div class="card"><div class="card-label">Orario</div><p>Il check-out è entro le <strong>11:00</strong>. Per partenze anticipate o deposito bagagli, contattaci.</p></div>
+      <div class="card">
+        <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Raccogliere i bagagli</div><div class="step-desc">Controlla armadi, cassetti, bagno e balcone per oggetti personali.</div></div></div>
+        <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Rifiuti e cucina</div><div class="step-desc">Smaltisci i rifiuti nei sacchi colorati e portali al cassonetto in fondo alla via.</div></div></div>
+        <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Chiudere tutto</div><div class="step-desc">Finestre, tapparelle, aria condizionata, carica-batterie staccati.</div></div></div>
+        <div class="step-item"><div class="step-num">4</div><div><div class="step-title">Riconsegna chiavi</div><div class="step-desc">Rimetti le chiavi nella cassetta con codice 2847. Richiudi a scatto.</div></div></div>
+        <div class="step-item"><div class="step-num">5</div><div><div class="step-title">Lascia una recensione ✦</div><div class="step-desc">Una recensione su Airbnb ci aiuta tantissimo. Grazie di cuore!</div></div></div>
       </div>
-      <div class="checkout-step">
-        <div class="step-circle">2</div>
-        <div class="step-content">
-          <div class="step-title">Rifiuti e cucina</div>
-          <div class="step-desc">Smaltisci i rifiuti nei sacchi colorati e porta le borse al cassonetto in fondo alla via.</div>
-        </div>
+      <div class="contact-bar">
+        <div class="contact-bar-text"><div class="contact-bar-lbl">È stato un piacere</div><div class="contact-bar-name">Arrivederci!</div></div>
+        <a href="tel:+393331234567" class="contact-bar-btn"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.69A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.5a16 16 0 006.29 6.29l1.24-1.26a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Contatta host</a>
       </div>
-      <div class="checkout-step">
-        <div class="step-circle">3</div>
-        <div class="step-content">
-          <div class="step-title">Chiudere tutto</div>
-          <div class="step-desc">Chiudi finestre e tapparelle, stacca l'aria condizionata e togli la spina del carica-batterie.</div>
-        </div>
-      </div>
-      <div class="checkout-step">
-        <div class="step-circle">4</div>
-        <div class="step-content">
-          <div class="step-title">Riconsegna chiavi</div>
-          <div class="step-desc">Rimetti le chiavi nella cassetta con lo stesso codice dell'arrivo. Richiudi a scatto.</div>
-        </div>
-      </div>
-      <div class="checkout-step">
-        <div class="step-circle">5</div>
-        <div class="step-content">
-          <div class="step-title">Lascia una recensione 🌟</div>
-          <div class="step-desc">Se il soggiorno ti è piaciuto, una recensione su Airbnb ci aiuta tantissimo. Grazie di cuore!</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="background: linear-gradient(135deg, #FAF0E8, #FDE8DC); border: 1.5px solid #E8C0A8;">
-      <div class="card-title" style="color: var(--terracotta)">Un saluto da noi ❤️</div>
-      <p>È stato un piacere ospitarti! Speriamo che tu abbia vissuto dei momenti meravigliosi.<br><br>Sei sempre il benvenuto — a presto!</p>
     </div>
   </div>
+
 </div>
 
 <script>
-function goTo(id) {
+const screenIds = ['home','checkin','wifi','regole','spazi','visitare','ristoranti','servizi','emergenza','checkout'];
+
+function showScreen(id, tabEl) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
+  if (tabEl) { tabEl.classList.add('active'); tabEl.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); }
 }
 
-function copyPwd() {
+function goTo(id, idx) {
+  const tabs = document.querySelectorAll('.nav-tab');
+  showScreen(id, tabs[idx] || null);
+}
+
+function copyPwd(btn) {
   const pwd = document.getElementById('pwd').textContent;
   navigator.clipboard.writeText(pwd).then(() => {
-    const btn = event.target;
-    btn.textContent = '✅ Copiata!';
-    setTimeout(() => btn.textContent = '📋 Copia Password', 2000);
-  }).catch(() => {
-    alert('Password: ' + pwd);
-  });
+    btn.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" stroke="white" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"/></svg> Copiata!';
+    setTimeout(() => { btn.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" stroke="white" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copia Password'; }, 2000);
+  }).catch(() => alert('Password: ' + pwd));
 }
 </script>
 </body>
