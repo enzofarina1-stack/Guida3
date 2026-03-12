@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Guida Ospiti – Casa sul Mare</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF6EF;
+    --warm: #F2E8D5;
+    --terracotta: #C4603A;
+    --terra-light: #E8896A;
+    --terra-dark: #9B3F20;
+    --sand: #D4A96A;
+    --sage: #7A8C6E;
+    --navy: #2C3E50;
+    --text: #2A1F14;
+    --text-soft: #6B5744;
+    --white: #FFFFFF;
+    --shadow: 0 8px 32px rgba(42,31,20,0.12);
+    --radius: 20px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    max-width: 430px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; flex-direction: column; animation: fadeIn .35s ease; }
+  .screen.active { display: flex; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:none } }
+
+  /* ── HOME SCREEN ── */
+  #home {
+    background: var(--cream);
+    position: relative; overflow: hidden;
+  }
+
+  .home-hero {
+    background: linear-gradient(155deg, #1a2a3a 0%, #C4603A 55%, #D4A96A 100%);
+    padding: 52px 24px 32px;
+    position: relative; overflow:hidden;
+    text-align: center;
+  }
+  .home-hero::before {
+    content:''; position:absolute; inset:0;
+    background: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='1.5' fill='rgba(255,255,255,0.06)'/%3E%3C/svg%3E");
+    pointer-events:none;
+  }
+  /* decorative circles */
+  .home-hero::after {
+    content:''; position:absolute;
+    width:260px; height:260px; border-radius:50%;
+    background: rgba(255,255,255,0.05);
+    top:-80px; right:-80px;
+    pointer-events:none;
+  }
+  .hero-circle {
+    position:absolute; width:160px; height:160px; border-radius:50%;
+    background: rgba(255,255,255,0.04);
+    bottom:-50px; left:-40px;
+    pointer-events:none;
+  }
+
+  .property-badge {
+    display: inline-flex; align-items:center; gap:8px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 100px; padding: 6px 16px 6px 10px;
+    color: rgba(255,255,255,0.9); font-size: 12px; font-weight:500;
+    margin-bottom: 18px;
+    position: relative; z-index:1;
+  }
+  .property-badge span { font-size:16px; }
+
+  .home-logo-row {
+    display: flex; align-items:center; justify-content:center; gap:16px;
+    margin-bottom: 14px; position:relative; z-index:1;
+  }
+  .home-logo {
+    width: 72px; height: 72px;
+    background: white;
+    border-radius: 20px;
+    display: flex; align-items:center; justify-content:center;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.28);
+    font-size: 32px;
+    flex-shrink:0;
+  }
+  .home-title-block { text-align:left; }
+  .home-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 700;
+    color: white; line-height: 1.2;
+  }
+  .home-subtitle {
+    color: rgba(255,255,255,0.7);
+    font-size: 13px; font-weight: 300;
+    margin-top: 4px;
+  }
+
+  /* ICON GRID */
+  .grid-container {
+    padding: 24px 18px 16px;
+    position: relative; z-index:1;
+    background: var(--cream);
+  }
+  .grid-label {
+    font-size: 11px; font-weight: 500; letter-spacing:1.5px;
+    color: var(--text-soft); text-transform:uppercase;
+    margin-bottom: 16px;
+  }
+
+  /* WELCOME CARD at bottom */
+  .welcome-card {
+    margin: 4px 18px 32px;
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--shadow);
+    position: relative;
+    border-left: 4px solid var(--terracotta);
+  }
+  .welcome-card .quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px; line-height:1;
+    color: var(--terracotta); opacity:.25;
+    position:absolute; top:8px; left:16px;
+    pointer-events:none;
+  }
+  .welcome-card p {
+    font-size: 14px; line-height: 1.7;
+    font-style: italic; color: var(--text-soft);
+    padding-left: 4px; margin-top:14px;
+  }
+  .welcome-card .author {
+    display: flex; align-items:center; gap:8px;
+    margin-top: 14px; padding-top:12px;
+    border-top: 1px solid var(--warm);
+  }
+  .author-avatar {
+    width:32px; height:32px; border-radius:50%;
+    background: linear-gradient(135deg, var(--terracotta), var(--sand));
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; flex-shrink:0;
+  }
+  .author-name { font-size:13px; font-weight:600; color:var(--text); }
+  .author-role { font-size:11px; color:var(--text-soft); }
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .icon-btn {
+    display: flex; flex-direction:column;
+    align-items: center; gap: 8px;
+    background: white;
+    border: none; border-radius: 18px;
+    padding: 18px 8px 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(42,31,20,0.08);
+    transition: transform .18s, box-shadow .18s;
+    position: relative; overflow:hidden;
+  }
+  .icon-btn:active { transform: scale(0.94); box-shadow: 0 2px 8px rgba(42,31,20,0.1); }
+  .icon-btn .ico {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex; align-items:center; justify-content:center;
+    font-size: 22px;
+  }
+  .icon-btn .lbl { font-size: 11px; font-weight:500; color: var(--text); text-align:center; line-height:1.2; }
+
+  .ico.terracotta { background: #FDEEE8; }
+  .ico.sage       { background: #EDF1EA; }
+  .ico.sand       { background: #FBF3E4; }
+  .ico.navy       { background: #E8EDF2; }
+  .ico.rose       { background: #FDEEF2; }
+  .ico.gold       { background: #FBF5E4; }
+
+  /* ── INNER PAGES ── */
+  .page-header {
+    background: linear-gradient(135deg, var(--terracotta), var(--sand));
+    padding: 52px 24px 28px;
+    position: relative; overflow:hidden;
+  }
+  .page-header::after {
+    content:''; position:absolute;
+    width:200px; height:200px; border-radius:50%;
+    background: rgba(255,255,255,0.08);
+    top:-60px; right:-60px;
+  }
+  .back-btn {
+    position:absolute; top:16px; left:16px;
+    background: rgba(255,255,255,0.2);
+    border: none; border-radius: 50%;
+    width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    font-size: 20px; color:white; cursor:pointer;
+    backdrop-filter: blur(6px);
+  }
+  .page-icon { font-size: 36px; margin-bottom: 10px; }
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; color:white; font-weight:700;
+  }
+  .page-body { padding: 24px 20px 40px; flex:1; overflow-y:auto; }
+
+  /* CARDS */
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .card-title {
+    font-size: 13px; font-weight:500; letter-spacing:1px;
+    text-transform:uppercase; color: var(--terracotta);
+    margin-bottom: 10px;
+  }
+  .card p { font-size: 15px; line-height: 1.7; color: var(--text-soft); }
+  .card strong { color: var(--text); }
+
+  /* WIFI BOX */
+  .wifi-box {
+    background: linear-gradient(135deg, var(--navy), #3d5a73);
+    border-radius: var(--radius); padding: 24px;
+    text-align: center; color:white; margin-bottom:14px;
+    box-shadow: var(--shadow);
+  }
+  .wifi-box .wifi-icon { font-size:40px; margin-bottom:12px; }
+  .wifi-field {
+    background: rgba(255,255,255,0.12);
+    border-radius: 12px; padding: 12px 16px;
+    margin-bottom: 10px;
+  }
+  .wifi-field label { font-size:11px; opacity:.65; letter-spacing:1px; text-transform:uppercase; }
+  .wifi-field .value { font-size: 18px; font-weight:700; margin-top:4px; letter-spacing:1px; }
+  .copy-btn {
+    display: inline-flex; align-items:center; gap:6px;
+    background: var(--terracotta); border:none; border-radius:12px;
+    color:white; font-size:13px; font-weight:500;
+    padding: 10px 20px; cursor:pointer; margin-top:6px;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity .2s;
+  }
+  .copy-btn:active { opacity:.75; }
+
+  /* RULES LIST */
+  .rule-item {
+    display:flex; gap:14px; align-items:flex-start;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--warm);
+  }
+  .rule-item:last-child { border-bottom:none; }
+  .rule-num {
+    width:28px; height:28px; border-radius:50%;
+    background: var(--warm); color: var(--terracotta);
+    font-weight:700; font-size:13px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .rule-text { font-size:15px; line-height:1.6; color:var(--text-soft); }
+  .rule-text strong { color:var(--text); display:block; margin-bottom:2px; }
+
+  /* PLACES */
+  .place-card {
+    background:white; border-radius:16px;
+    overflow:hidden; margin-bottom:14px;
+    box-shadow: var(--shadow); display:flex;
+  }
+  .place-color {
+    width:6px; flex-shrink:0;
+  }
+  .place-info { padding: 16px 16px 16px 14px; flex:1; }
+  .place-name { font-weight:600; font-size:15px; margin-bottom:4px; }
+  .place-desc { font-size:13px; color:var(--text-soft); line-height:1.5; }
+  .place-dist { font-size:12px; color:var(--terracotta); font-weight:500; margin-top:6px; }
+
+  /* RESTAURANTS */
+  .resto-card {
+    background:white; border-radius:16px; padding:18px;
+    margin-bottom:14px; box-shadow: var(--shadow);
+  }
+  .resto-header { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .resto-emoji { font-size:30px; }
+  .resto-name { font-weight:700; font-size:16px; }
+  .resto-type { font-size:12px; color:var(--text-soft); }
+  .resto-stars { color: var(--sand); font-size:14px; margin-bottom:4px; }
+  .resto-desc { font-size:14px; color:var(--text-soft); line-height:1.5; }
+  .resto-tag {
+    display:inline-block; background:var(--warm);
+    border-radius:20px; padding:3px 10px;
+    font-size:11px; color:var(--terracotta); font-weight:500;
+    margin: 8px 4px 0 0;
+  }
+
+  /* EMERGENCY */
+  .sos-header {
+    background: linear-gradient(135deg, #C0392B, #E74C3C);
+  }
+  .emergency-card {
+    background:white; border-radius:16px; padding:18px;
+    margin-bottom:12px; box-shadow:var(--shadow);
+    display:flex; align-items:center; gap:16px;
+  }
+  .emergency-icon {
+    width:52px; height:52px; border-radius:16px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:24px; flex-shrink:0;
+  }
+  .emergency-info { flex:1; }
+  .emergency-name { font-weight:700; font-size:15px; margin-bottom:2px; }
+  .emergency-desc { font-size:13px; color:var(--text-soft); }
+  .call-btn {
+    background: linear-gradient(135deg, #C0392B, #E74C3C);
+    color:white; border:none; border-radius:12px;
+    padding: 10px 16px; font-size:14px; font-weight:600;
+    cursor:pointer; font-family:'DM Sans',sans-serif;
+    display:flex; align-items:center; gap:6px;
+    text-decoration:none;
+  }
+
+  /* CHECKOUT */
+  .checkout-step {
+    display:flex; gap:16px; padding:18px 0;
+    border-bottom: 1px dashed var(--warm);
+  }
+  .checkout-step:last-child { border-bottom:none; }
+  .step-circle {
+    width:36px; height:36px; border-radius:50%;
+    background: linear-gradient(135deg, var(--terracotta), var(--sand));
+    color:white; font-weight:700; font-size:15px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .step-content {}
+  .step-title { font-weight:600; font-size:15px; margin-bottom:4px; }
+  .step-desc { font-size:14px; color:var(--text-soft); line-height:1.55; }
+
+  /* CHECKIN */
+  .info-row {
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 14px 0; border-bottom: 1px solid var(--warm);
+  }
+  .info-row:last-child { border-bottom:none; }
+  .info-label { font-size:13px; color:var(--text-soft); font-weight:400; }
+  .info-value { font-size:15px; font-weight:600; color:var(--text); }
+
+  /* SPACES */
+  .space-card {
+    background:white; border-radius:16px; padding:20px;
+    margin-bottom:14px; box-shadow:var(--shadow);
+  }
+  .space-header { display:flex; gap:12px; align-items:center; margin-bottom:10px; }
+  .space-emoji { font-size:28px; }
+  .space-name { font-weight:700; font-size:16px; }
+  .space-desc { font-size:14px; color:var(--text-soft); line-height:1.6; }
+  .feature-list { margin-top:12px; display:flex; flex-wrap:wrap; gap:8px; }
+  .feature-tag {
+    background:var(--warm); border-radius:20px;
+    padding:5px 12px; font-size:12px; color:var(--text);
+  }
+
+  /* POSITION */
+  .map-placeholder {
+    background: linear-gradient(135deg, #e8f4e8, #d4e8d4);
+    border-radius: 16px; height:200px;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    margin-bottom:14px; gap:8px;
+    border: 2px dashed var(--sage);
+    color: var(--sage);
+    font-size:14px; text-align:center; padding:20px;
+  }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+    width:100%; max-width:430px;
+    background:white;
+    border-top: 1px solid var(--warm);
+    display:flex; padding: 10px 0 20px;
+    z-index: 100;
+  }
+  .nav-item {
+    flex:1; display:flex; flex-direction:column;
+    align-items:center; gap:3px;
+    font-size:10px; font-weight:500; color:var(--text-soft);
+    cursor:pointer; padding:4px 0;
+    transition: color .2s;
+    border:none; background:none; font-family:'DM Sans',sans-serif;
+  }
+  .nav-item.active { color:var(--terracotta); }
+  .nav-item .nav-ico { font-size:20px; }
+
+  /* SERVICES PAGE */
+  .service-item {
+    display:flex; gap:14px; align-items:center;
+    padding:16px 0; border-bottom:1px solid var(--warm);
+  }
+  .service-item:last-child { border-bottom:none; }
+  .service-icon {
+    width:44px; height:44px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; flex-shrink:0; background:var(--warm);
+  }
+  .service-info { flex:1; }
+  .service-name { font-weight:600; font-size:15px; margin-bottom:2px; }
+  .service-desc { font-size:13px; color:var(--text-soft); }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════ HOME ════════════════════════════════ -->
+<div id="home" class="screen active">
+
+  <!-- HERO HEADER -->
+  <div class="home-hero">
+    <div class="hero-circle"></div>
+    <div class="property-badge"><span>🏡</span> Casa sul Mare — Porto Antico</div>
+    <div class="home-logo-row">
+      <div class="home-logo">🌊</div>
+      <div class="home-title-block">
+        <h1 class="home-title">Benvenuto<br>nella tua casa!</h1>
+        <p class="home-subtitle">La tua guida personale</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ICON GRID -->
+  <div class="grid-container">
+    <div class="grid-label">Esplora la guida</div>
+    <div class="icon-grid">
+      <button class="icon-btn" onclick="goTo('checkin')">
+        <div class="ico terracotta">🗝️</div>
+        <span class="lbl">Check-in</span>
+      </button>
+      <button class="icon-btn" onclick="goTo('wifi')">
+        <div class="ico sage">📶</div>
+        <span class="lbl">WiFi</span>
+      </button>
+      <button class="icon-btn" onclick="goTo('regole')">
+        <div class="ico sand">📋</div>
+        <span class="lbl">Regole</span>
+      </button>
+      <button class="icon-btn" onclick="goTo('spazi')">
+        <div class="ico navy">🛋️</div>
+        <span class="lbl">Gli Spazi</span>
+      </button>
+      <button class="icon-btn" onclick="goTo('visitare')">
+        <div class="ico rose">📍</div>
+        <span class="lbl">Da Visitare</span>
+      </button>
+      <button class="icon-btn" onclick="goTo('servizi')">
+        <div class="ico gold">⭐</div>
+        <span class="lbl">Servizi</span>
+      </button>
+      <button class="icon-btn" onclick="goTo('ristoranti')">
+        <div class="ico terracotta">🍽️</div>
+        <span class="lbl">Ristoranti</span>
+      </button>
+      <button class="icon-btn" onclick="goTo('emergenza')">
+        <div class="ico rose">🆘</div>
+        <span class="lbl">Emergenza</span>
+      </button>
+      <button class="icon-btn" onclick="goTo('checkout')">
+        <div class="ico sage">👋</div>
+        <span class="lbl">Check-out</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- WELCOME MESSAGE (bottom) -->
+  <div class="welcome-card">
+    <div class="quote-mark">"</div>
+    <p>Siamo felici di ospitarti! Abbiamo preparato questa piccola guida per rendere il tuo soggiorno perfetto. Non esitare a contattarci per qualsiasi cosa — siamo qui per te.</p>
+    <div class="author">
+      <div class="author-avatar">👫</div>
+      <div>
+        <div class="author-name">Marco &amp; Giulia</div>
+        <div class="author-role">I tuoi host ❤️</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════ CHECK-IN ════════════════════════════════ -->
+<div id="checkin" class="screen">
+  <div class="page-header">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <div class="page-icon">🗝️</div>
+    <h2 class="page-title">Check-in</h2>
+  </div>
+  <div class="page-body">
+    <div class="card">
+      <div class="card-title">Informazioni Soggiorno</div>
+      <div class="info-row">
+        <span class="info-label">Check-in</span>
+        <span class="info-value">dalle 15:00</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Check-out</span>
+        <span class="info-value">entro le 11:00</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Ospiti massimi</span>
+        <span class="info-value">4 persone</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Indirizzo</span>
+        <span class="info-value">Via del Mare, 12</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Come Accedere</div>
+      <p>Il codice della cassetta delle chiavi è <strong>2847</strong>. La cassetta si trova a sinistra del portone principale.<br><br>
+      Premi il tasto ★ poi inserisci il codice. Le chiavi sono all'interno — usa quella con il portachiavi <strong>blu</strong> per la porta d'ingresso.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Parcheggio</div>
+      <p>Hai a disposizione un posto auto riservato nel cortile interno. Accesso dal cancello laterale su <strong>Via Garibaldi</strong> — stesso codice della cassetta: <strong>2847</strong>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ WIFI ════════════════════════════════ -->
+<div id="wifi" class="screen">
+  <div class="page-header" style="background: linear-gradient(135deg, #2C3E50, #4A6278);">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <div class="page-icon">📶</div>
+    <h2 class="page-title">Connessione WiFi</h2>
+  </div>
+  <div class="page-body">
+    <div class="wifi-box">
+      <div class="wifi-icon">📡</div>
+      <div class="wifi-field">
+        <label>Nome Rete</label>
+        <div class="value">CasaSulMare_Guest</div>
+      </div>
+      <div class="wifi-field">
+        <label>Password</label>
+        <div class="value" id="pwd">mare2024</div>
+      </div>
+      <button class="copy-btn" onclick="copyPwd()">📋 Copia Password</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Note sulla Connessione</div>
+      <p>La fibra copre tutto l'appartamento. Per streaming o videochiamate il segnale è migliore nel salotto e in camera da letto.<br><br>
+      In caso di problemi, riavvia il router (box bianco in cucina) tenendo premuto il tasto laterale per 10 secondi.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ REGOLE ════════════════════════════════ -->
+<div id="regole" class="screen">
+  <div class="page-header" style="background: linear-gradient(135deg, #7A8C6E, #A8BA96);">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <div class="page-icon">📋</div>
+    <h2 class="page-title">Regole della Casa</h2>
+  </div>
+  <div class="page-body">
+    <div class="card">
+      <div class="rule-item">
+        <div class="rule-num">1</div>
+        <div class="rule-text"><strong>Silenzio Notturno</strong>Dalle 23:00 alle 8:00 si prega di mantenere un livello di rumore basso, in rispetto dei vicini.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">2</div>
+        <div class="rule-text"><strong>Niente Fumo</strong>È vietato fumare in tutti gli spazi interni. È consentito sul balcone usando il posacenere.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">3</div>
+        <div class="rule-text"><strong>Animali Domestici</strong>Previa comunicazione, i pet sono benvenuti! Ti chiediamo di non lasciarli sul divano o sui letti.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">4</div>
+        <div class="rule-text"><strong>Ospiti Aggiuntivi</strong>Gli ospiti non registrati non possono pernottare. Per aggiungere persone contatta il tuo host.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">5</div>
+        <div class="rule-text"><strong>Raccolta Differenziata</strong>I sacchi colorati sotto il lavello: <strong>giallo</strong> = plastica, <strong>blu</strong> = carta, <strong>grigio</strong> = indifferenziato.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">6</div>
+        <div class="rule-text"><strong>Cura degli Spazi</strong>Grazie per trattare la casa con rispetto. In caso di rotture accidentali, segnalalo senza problemi.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ SPAZI ════════════════════════════════ -->
+<div id="spazi" class="screen">
+  <div class="page-header" style="background: linear-gradient(135deg, #2C3E50, #3d5a73);">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <div class="page-icon">🛋️</div>
+    <h2 class="page-title">Gli Spazi</h2>
+  </div>
+  <div class="page-body">
+    <div class="space-card">
+      <div class="space-header">
+        <div class="space-emoji">🛌</div>
+        <div class="space-name">Camera da Letto</div>
+      </div>
+      <div class="space-desc">Letto matrimoniale con materasso memory foam. Biancheria fresca di lavanderia. Cuscini extra nell'armadio a sinistra.</div>
+      <div class="feature-list">
+        <span class="feature-tag">🌡️ Aria condizionata</span>
+        <span class="feature-tag">📺 Smart TV 43"</span>
+        <span class="feature-tag">🔒 Cassaforte</span>
+      </div>
+    </div>
+    <div class="space-card">
+      <div class="space-header">
+        <div class="space-emoji">🍳</div>
+        <div class="space-name">Cucina</div>
+      </div>
+      <div class="space-desc">Completamente attrezzata. Trovi caffè, tè e zucchero nel pensile a destra. Il moka da 6 tazze è nel secondo cassetto.</div>
+      <div class="feature-list">
+        <span class="feature-tag">☕ Macchinetta</span>
+        <span class="feature-tag">🥘 Fornelli gas</span>
+        <span class="feature-tag">🧊 Frigorifero</span>
+        <span class="feature-tag">🍽️ Lavastoviglie</span>
+      </div>
+    </div>
+    <div class="space-card">
+      <div class="space-header">
+        <div class="space-emoji">🛁</div>
+        <div class="space-name">Bagno</div>
+      </div>
+      <div class="space-desc">Doccia con idromassaggio. Asciugamani puliti nell'armadietto. Phon nel cassetto sotto il lavabo.</div>
+      <div class="feature-list">
+        <span class="feature-tag">💆 Idromassaggio</span>
+        <span class="feature-tag">♨️ Acqua calda istantanea</span>
+      </div>
+    </div>
+    <div class="space-card">
+      <div class="space-header">
+        <div class="space-emoji">🌅</div>
+        <div class="space-name">Balcone</div>
+      </div>
+      <div class="space-desc">Vista sul porto. Tavolo e 2 sedie. Funziona benissimo per la colazione la mattina con la luce del sole!</div>
+      <div class="feature-list">
+        <span class="feature-tag">🌊 Vista mare</span>
+        <span class="feature-tag">🌞 Orientamento Est</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ DA VISITARE ════════════════════════════════ -->
+<div id="visitare" class="screen">
+  <div class="page-header" style="background: linear-gradient(135deg, #C4603A, #D4855A);">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <div class="page-icon">📍</div>
+    <h2 class="page-title">Da Visitare</h2>
+  </div>
+  <div class="page-body">
+    <div class="map-placeholder">
+      <div style="font-size:36px">🗺️</div>
+      <div><strong>Mappa Interattiva</strong><br><small>In questa sezione puoi integrare<br>Google Maps o una mappa personalizzata</small></div>
+    </div>
+
+    <div class="place-card">
+      <div class="place-color" style="background:#C4603A"></div>
+      <div class="place-info">
+        <div class="place-name">🏰 Castello Aragonese</div>
+        <div class="place-desc">Fortezza medievale con vista panoramica sul golfo. Assolutamente da non perdere al tramonto.</div>
+        <div class="place-dist">📍 8 min a piedi</div>
+      </div>
+    </div>
+    <div class="place-card">
+      <div class="place-color" style="background:#7A8C6E"></div>
+      <div class="place-info">
+        <div class="place-name">🏖️ Spiaggia della Caletta</div>
+        <div class="place-desc">Caletta nascosta con acqua cristallina. Accessibile solo a piedi lungo il sentiero dei pescatori.</div>
+        <div class="place-dist">📍 15 min a piedi</div>
+      </div>
+    </div>
+    <div class="place-card">
+      <div class="place-color" style="background:#D4A96A"></div>
+      <div class="place-info">
+        <div class="place-name">⛵ Porto Antico</div>
+        <div class="place-desc">Passeggiata serale tra pescherecci colorati, bar e gelaterie. Il cuore della vita locale.</div>
+        <div class="place-dist">📍 2 min a piedi</div>
+      </div>
+    </div>
+    <div class="place-card">
+      <div class="place-color" style="background:#2C3E50"></div>
+      <div class="place-info">
+        <div class="place-name">🌿 Giardini Botanici</div>
+        <div class="place-desc">Riserva naturale con piante mediterranee rare. Biglietto €5, aperto 9:00–18:00.</div>
+        <div class="place-dist">📍 20 min in auto</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ RISTORANTI ════════════════════════════════ -->
+<div id="ristoranti" class="screen">
+  <div class="page-header" style="background: linear-gradient(135deg, #9B3F20, #C4603A);">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <div class="page-icon">🍽️</div>
+    <h2 class="page-title">Ristoranti</h2>
+  </div>
+  <div class="page-body">
+    <div class="resto-card">
+      <div class="resto-header">
+        <div class="resto-emoji">🐟</div>
+        <div>
+          <div class="resto-name">Trattoria da Rocco</div>
+          <div class="resto-type">Cucina di mare tradizionale</div>
+        </div>
+      </div>
+      <div class="resto-stars">★★★★★</div>
+      <div class="resto-desc">Il migliore della zona. Il pescato del giorno viene servito solo su prenotazione. Chiede il nostro nome: spesso fanno un piccolo omaggio!</div>
+      <span class="resto-tag">🚶 3 min</span><span class="resto-tag">€€</span><span class="resto-tag">📞 Prenota</span>
+    </div>
+    <div class="resto-card">
+      <div class="resto-header">
+        <div class="resto-emoji">🍕</div>
+        <div>
+          <div class="resto-name">Pizzeria Il Vecchio Forno</div>
+          <div class="resto-type">Pizza napoletana</div>
+        </div>
+      </div>
+      <div class="resto-stars">★★★★☆</div>
+      <div class="resto-desc">Forno a legna dal 1978. La marinara e la margherita DOP sono imperdibili. Ottimo anche per asporto.</div>
+      <span class="resto-tag">🚶 5 min</span><span class="resto-tag">€</span><span class="resto-tag">🕗 Apre 19:00</span>
+    </div>
+    <div class="resto-card">
+      <div class="resto-header">
+        <div class="resto-emoji">☕</div>
+        <div>
+          <div class="resto-name">Bar Centrale</div>
+          <div class="resto-type">Colazione &amp; Aperitivo</div>
+        </div>
+      </div>
+      <div class="resto-stars">★★★★☆</div>
+      <div class="resto-desc">Cornetti freschi dal mattino e aperitivo rinforzato dalle 18:00. Il barista Enzo è un'istituzione.</div>
+      <span class="resto-tag">🚶 1 min</span><span class="resto-tag">€</span><span class="resto-tag">🕖 7:00–23:00</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ SERVIZI ════════════════════════════════ -->
+<div id="servizi" class="screen">
+  <div class="page-header" style="background: linear-gradient(135deg, #D4A96A, #C4603A);">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <div class="page-icon">⭐</div>
+    <h2 class="page-title">Servizi</h2>
+  </div>
+  <div class="page-body">
+    <div class="card">
+      <div class="service-item">
+        <div class="service-icon">🧺</div>
+        <div class="service-info">
+          <div class="service-name">Cambio Biancheria</div>
+          <div class="service-desc">Su richiesta per soggiorni oltre 5 notti. Gratuito.</div>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-icon">🧹</div>
+        <div class="service-info">
+          <div class="service-name">Pulizia Aggiuntiva</div>
+          <div class="service-desc">Disponibile a €25. Contatta l'host con 24h di anticipo.</div>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-icon">🚗</div>
+        <div class="service-info">
+          <div class="service-name">Transfer Aeroporto</div>
+          <div class="service-desc">Servizio taxi convenzionato. Contattaci per tariffe.</div>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-icon">🛒</div>
+        <div class="service-info">
+          <div class="service-name">Spesa a Domicilio</div>
+          <div class="service-desc">Supermercato locale consegna in 2h. App: "SpesaFacile".</div>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-icon">⛵</div>
+        <div class="service-info">
+          <div class="service-name">Noleggio Barca</div>
+          <div class="service-desc">Gommone 40cv, patente non richiesta sotto 25cv. Da €80/giorno.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ EMERGENZA ════════════════════════════════ -->
+<div id="emergenza" class="screen">
+  <div class="page-header sos-header">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <div class="page-icon">🆘</div>
+    <h2 class="page-title">Emergenze</h2>
+  </div>
+  <div class="page-body">
+    <div class="emergency-card">
+      <div class="emergency-icon" style="background:#FDE8E8">🏥</div>
+      <div class="emergency-info">
+        <div class="emergency-name">Pronto Soccorso</div>
+        <div class="emergency-desc">Ospedale Civile — Via Roma, 45 (12 min in auto)</div>
+      </div>
+      <a href="tel:118" class="call-btn">📞 118</a>
+    </div>
+    <div class="emergency-card">
+      <div class="emergency-icon" style="background:#E8F0FE">👮</div>
+      <div class="emergency-info">
+        <div class="emergency-name">Carabinieri</div>
+        <div class="emergency-desc">Caserma in Piazza Vittoria (5 min a piedi)</div>
+      </div>
+      <a href="tel:112" class="call-btn">📞 112</a>
+    </div>
+    <div class="emergency-card">
+      <div class="emergency-icon" style="background:#FFF3E8">🔥</div>
+      <div class="emergency-info">
+        <div class="emergency-name">Vigili del Fuoco</div>
+        <div class="emergency-desc">Per incendi, allagamenti, emergenze strutturali</div>
+      </div>
+      <a href="tel:115" class="call-btn">📞 115</a>
+    </div>
+    <div class="emergency-card">
+      <div class="emergency-icon" style="background:#E8F5E9">🏠</div>
+      <div class="emergency-info">
+        <div class="emergency-name">Host Marco</div>
+        <div class="emergency-desc">Per qualsiasi problema con l'appartamento</div>
+      </div>
+      <a href="tel:+393331234567" class="call-btn" style="background:var(--terracotta)">📞 Chiama</a>
+    </div>
+    <div class="card" style="margin-top:8px">
+      <div class="card-title">⚡ In caso di blackout</div>
+      <p>Il quadro elettrico è nell'ingresso, armadio a destra. Riattiva tutti gli interruttori dall'alto verso il basso. Se il problema persiste, chiama Marco.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ CHECK-OUT ════════════════════════════════ -->
+<div id="checkout" class="screen">
+  <div class="page-header" style="background: linear-gradient(135deg, #7A8C6E, #4A6E52);">
+    <button class="back-btn" onclick="goTo('home')">←</button>
+    <div class="page-icon">👋</div>
+    <h2 class="page-title">Check-out</h2>
+  </div>
+  <div class="page-body">
+    <div class="card">
+      <div class="card-title">⏰ Orario</div>
+      <p>Il check-out è entro le <strong>11:00</strong>. Se hai bisogno di partire prima o di conservare i bagagli, contattaci!</p>
+    </div>
+
+    <div class="card">
+      <div class="checkout-step">
+        <div class="step-circle">1</div>
+        <div class="step-content">
+          <div class="step-title">Raccogliere i bagagli</div>
+          <div class="step-desc">Controlla tutti gli armadi, cassetti e il balcone. Verifica che non ci siano oggetti personali lasciati in giro.</div>
+        </div>
+      </div>
+      <div class="checkout-step">
+        <div class="step-circle">2</div>
+        <div class="step-content">
+          <div class="step-title">Rifiuti e cucina</div>
+          <div class="step-desc">Smaltisci i rifiuti nei sacchi colorati e porta le borse al cassonetto in fondo alla via.</div>
+        </div>
+      </div>
+      <div class="checkout-step">
+        <div class="step-circle">3</div>
+        <div class="step-content">
+          <div class="step-title">Chiudere tutto</div>
+          <div class="step-desc">Chiudi finestre e tapparelle, stacca l'aria condizionata e togli la spina del carica-batterie.</div>
+        </div>
+      </div>
+      <div class="checkout-step">
+        <div class="step-circle">4</div>
+        <div class="step-content">
+          <div class="step-title">Riconsegna chiavi</div>
+          <div class="step-desc">Rimetti le chiavi nella cassetta con lo stesso codice dell'arrivo. Richiudi a scatto.</div>
+        </div>
+      </div>
+      <div class="checkout-step">
+        <div class="step-circle">5</div>
+        <div class="step-content">
+          <div class="step-title">Lascia una recensione 🌟</div>
+          <div class="step-desc">Se il soggiorno ti è piaciuto, una recensione su Airbnb ci aiuta tantissimo. Grazie di cuore!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="background: linear-gradient(135deg, #FAF0E8, #FDE8DC); border: 1.5px solid #E8C0A8;">
+      <div class="card-title" style="color: var(--terracotta)">Un saluto da noi ❤️</div>
+      <p>È stato un piacere ospitarti! Speriamo che tu abbia vissuto dei momenti meravigliosi.<br><br>Sei sempre il benvenuto — a presto!</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function copyPwd() {
+  const pwd = document.getElementById('pwd').textContent;
+  navigator.clipboard.writeText(pwd).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copiata!';
+    setTimeout(() => btn.textContent = '📋 Copia Password', 2000);
+  }).catch(() => {
+    alert('Password: ' + pwd);
+  });
+}
+</script>
+</body>
+</html>
